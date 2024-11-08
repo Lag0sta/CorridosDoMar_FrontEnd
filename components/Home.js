@@ -15,26 +15,33 @@ function Home() {
   console.log(isSignModalOpen)
   return (
     <div className="max-w-screen max-h-screen xs:max-w-screen mx-auto">
-      <main className="max-w-full h-screen mx-0 grid grid-rows-6 grid-cols-4 bg-yellow-500">
+      <main className="max-w-full h-screen mx-0 grid grid-rows-6 grid-cols-4 bg-yellow-400">
+
         <header className=" row-start-1 row-end-2 col-start-1 col-end-5 z-10">
           <Header setIsSignModalOpen={setIsSignModalOpen}
             setIsSignIn={setIsSignIn}
             setIsSignUp={setIsSignUp} />
+
         </header>
-        <div className="row-start-2 row-end-6 col-start-1 col-end-5 	">
+        <div className="row-start-2 row-end-6 col-start-1 col-end-5 bg-white	">
           <Research />
         </div>
         <footer className=" row-start-6 row-end-7 col-start-1 col-end-5 ">
           <Footer />
         </footer>
-        
-        {isSignModalOpen && 
-  <div class="h-screen w-screen fixed inset-0 flex items-center justify-center z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                        {isSignIn && <SignIn setIsSignModalOpen={setIsSignModalOpen}/>}
-                        {isSignUp && <SignUp setIsSignModalOpen={setIsSignModalOpen}/>}
-              
+
+        {isSignModalOpen &&
+          <div className="h-screen w-screen fixed inset-0 flex items-center justify-center z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+          <div className="fixed inset-0 bg-black bg-opacity-10 transition-opacity backdrop-filter backdrop-blur-sm" ></div>
+            <div className='z-50'>
+              {isSignIn && <SignIn setIsSignModalOpen={setIsSignModalOpen} />}
+              {isSignUp && <SignUp setIsSignModalOpen={setIsSignModalOpen} />}
+
+
+            </div>
+
           </div>
-}
+        }
       </main>
 
     </div>
