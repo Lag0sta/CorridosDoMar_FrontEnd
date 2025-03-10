@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive'
+import { useSelector } from 'react-redux';
+
+import { login } from "../reducers/user";
 
 
-function Header({ setIsSignModalOpen, setIsSignIn, setIsSignUp }) {
+function Header({ setIsSignModalOpen, setIsSignIn, setIsSignUp, setIsMenu, setIsCurrentMainComponent }) {
   const [msg, setMsg] = useState(null);
   const [submit, setSubmit] = useState(null)
   const [search, setSearch] = useState(null)
   const [language, setLanguage] = useState(null)
   const [header, setHeader] = useState(null)
+  const token = useSelector((state) => state.user.value.token);
+  const defaultAvatar = useSelector((state) => state.user.value.avatar);
+
+  let avatar;
 
   const isLandscape = useMediaQuery({ query: '(orientation: landscape)' });
   const isPortrait = useMediaQuery({ query: '(orientation: portrait)' });
@@ -39,6 +46,7 @@ function Header({ setIsSignModalOpen, setIsSignIn, setIsSignUp }) {
     setIsSignModalOpen(true)
     setIsSignIn(true)
     setIsSignUp(false)
+    setIsMenu(false)
   }
 
   function handleSignUpClick() {
@@ -46,6 +54,15 @@ function Header({ setIsSignModalOpen, setIsSignIn, setIsSignUp }) {
     setIsSignModalOpen(true)
     setIsSignIn(false)
     setIsSignUp(true)
+    setIsMenu(false)
+
+  }
+
+  function openMenuModal() {
+    setIsSignModalOpen(true)
+    setIsSignIn(false)
+    setIsSignUp(false)
+    setIsMenu(true)
   }
 
   useEffect(() => {
@@ -66,22 +83,16 @@ function Header({ setIsSignModalOpen, setIsSignIn, setIsSignUp }) {
       </svg>
       )
       if (isPortrait) {
-        setHeader(null)
+        setHeader(<div>
+          <div className="h-32 w-screen bg-yellow-400" />
+        </div>)
       } else if (isLandscape) {
 
         setHeader(<div className="flex flex-row justify-between">
           <div className="h-screen w-32 bg-yellow-400" />
           <div className="h-screen w-32 bg-yellow-400" />
         </div>)
-
-
-
-
-
-
       }
-
-
     } else if (isLg || isXl || is2xl) {
       setMsg("Messagerie")
       setSubmit("Soumettre")
@@ -90,31 +101,49 @@ function Header({ setIsSignModalOpen, setIsSignIn, setIsSignUp }) {
     }
   }, [isXs, isSm, isMd, isLg, isXl, is2xl])
 
+  if (token) {
+    avatar = <div className="h-20 w-20 absolute left-1/2 -translate-x-1/2 top-13 translate-y-1 flex justify-center items-center rounded-full border-2 border-white bg-yellow-500"
+      onClick={() => openMenuModal()}>
+      <span style={{ fontFamily: 'CaptureIt', fontSize: '40px' }}>{defaultAvatar}</span>
+    </div>
+  }
 
-  // useEffect(() => {
-  //   fetch("http://localhost:3000/users/signin", )
-  // })
+  function handleSubmit() {
+    setIsCurrentMainComponent("submit")
+  }
+
+  function handleSearch() {
+    setIsCurrentMainComponent("research")
+  }
+
+
   return (
-    <div className="h-32 w-screen">
+    <div>
       {header}
+      <div className='absolute top-0'>
+        <h1 className="mt-4 mb-4 w-screen text-center landscape:xs:text-3xl landscape:lg:text-5xl landscape:absolute landscape:top-0 landscape:left-1/2 landscape:-translate-x-1/2 text-3xl">CORRIDOS DO MAR</h1>
+        <div className=" flex justify-center z-10  landscape:xs:w-full landscape:xs:flex landscape:xs:flex-row-reverse landscape:xs:justify-between landscape:xs:absolute landscape:xs:top-1/2 landscape:xs:-translate-y-1/2 landscape:xs:left-1/2 landscape:xs:-translate-x-1/2 landscape:lg:flex-row landscape:lg:justify-center landscape:lg:relative landscape:lg:top-0 landscape:lg:left-0 landscape:lg:-translate-x-0 landscape:lg:-translate-y-0 ">
+          <div className="h-[70px] w-1/3 ml-2 flex flex-row justify-center items-center landscape:xs:h-[90%] landscape:xs:w-fit landscape:xs:flex-col landscape:lg:h-[70px] landscape:lg:w-1/3 landscape:lg:flex-row">
+            <button className='mx-1 xs:h-10 lg:h-7 xs:w-10 xs:rounded-md lg:rounded-lg flex justify-center items-center hover:bg-white hover:text -black '>{language}</button>
+            <button className='mx-1 xs:h-10 lg:h-7 xs:w-10 xs:rounded-md lg:rounded-lg flex justify-center items-center hover:bg-white'
+              onClick={() => handleSearch()}>{search}</button>
+          </div>
+          <div className="h-[70px] w-1/3 flex flex-col justify-center items-center">
+            {avatar}
+          </div>
+          {!token && (<div className="flex justify-center items-center portrait: landscape:xs:h-[90%] landscape:xs:w-fit landscape:xs:flex-col landscape:lg:flex-row ">
+            <button className="flex justify-center  items-center m-1 w-11 h-6 rounded-md hover:bg-white hover:text-black text-xs" onClick={() => handleSignInClick()}>Log In</button>
+            <button className="flex justify-center  items-center m-1 w-11 h-6 rounded-md hover:bg-white hover:text-black text-xs" onClick={() => handleSignUpClick()}>Join</button>
+          </div>)}
+          {token && (<div className="flex justify-center items-center portrait: landscape:xs:h-[90%] landscape:xs:w-fit landscape:xs:flex-col landscape:lg:flex-row ">
+            <button className='mx-1  xs:h-10 lg:h-7 xs:w-10 xs:rounded-md lg:rounded-lg flex justify-center items-center hover:bg-white'>{msg}</button>
+            <button className='mx-1 xs:h-10 lg:h-7 xs:w-10 xs:rounded-md lg:rounded-lg flex justify-center items-center hover:bg-white'
+              onClick={handleSubmit}>{submit}</button>
+          </div>)}
+        </div>
 
-      <h1 className="mt-4  w-screen text-center landscape:xs:text-3xl landscape:lg:text-5xl landscape:absolute landscape:top-0 landscape:left-1/2 landscape:-translate-x-1/2 ">CORRIDOS DO MAR</h1>
-
-      <div className=" flex justify-center z-10 landscape:xs:w-full landscape:xs:flex landscape:xs:flex-row-reverse landscape:xs:justify-between landscape:xs:absolute landscape:xs:top-1/2 landscape:xs:-translate-y-1/2 landscape:xs:left-1/2 landscape:xs:-translate-x-1/2 landscape:lg:flex-row landscape:lg:justify-center landscape:lg:relative landscape:lg:top-0 landscape:lg:left-0 landscape:lg:-translate-x-0 landscape:lg:-translate-y-0 ">
-        <div className="h-[70px] w-1/3 ml-2 flex flex-row justify-center items-center landscape:xs:h-[90%] landscape:xs:w-fit landscape:xs:flex-col landscape:lg:h-[70px] landscape:lg:w-1/3 landscape:lg:flex-row">
-          <button className='mx-1 xs:h-10 lg:h-7 xs:w-10 xs:rounded-full lg:rounded-lg flex justify-center items-center hover:bg-white hover:text -black '>{language}</button>
-          <button className='mx-1 xs:h-10 lg:h-7 xs:w-10 xsrounded-full lg:rounded-lg flex justify-center items-center hover:bg-white'>{msg}</button>
-          <button className='mx-1 xs:h-10 lg:h-7 xs:w-10 xsrounded-full lg:rounded-lg flex justify-center items-center hover:bg-white'>{submit}</button>
-          <button className='mx-1 xs:h-10 lg:h-7 xs:w-10 xsrounded-full lg:rounded-lg flex justify-center items-center hover:bg-white'>{search}</button>
-        </div>
-        <div className="h-[70px] w-1/3 flex flex-col justify-center items-center">
-          {/* <button className='w-20'>logout</button> */}
-        </div>
-        <div className="h-[70px] w-1/3  flex justify-center items-center portrait:flex-col landscape:xs:h-[90%] landscape:xs:w-fit landscape:xs:flex-col landscape:lg:flex-row ">
-          <button className="flex justify-center mb-1 items-center w-20 hover:bg-white hover:text-black" onClick={() => handleSignInClick()}>SignIn</button>
-          <button className="flex justify-center  items-center w-20 hover:bg-white hover:text-black" onClick={() => handleSignUpClick()}>SignUp</button>
-        </div>
       </div>
+
 
     </div>
   )

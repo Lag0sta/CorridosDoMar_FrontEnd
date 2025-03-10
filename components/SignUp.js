@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 
-import PasswordStrength from './PasswordStrength.js'
 
-function SignUp({ setIsSignModalOpen }) {
+function SignUp({ setIsSignModalOpen, setIsSignUp }) {
     const [pseudo, setPseudo] = useState('')
     const [capoeiraGroup, setCapoeiraGroup] = useState('')
     const [email, setEmail] = useState('')
@@ -116,8 +115,6 @@ function SignUp({ setIsSignModalOpen }) {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)} /><span className='text-red-500'>*</span>
                     </div>
-
-                    {/* <PasswordStrength password={password} pseudo={pseudo} email={email} /> */}
                 </div>
                 <div>
                     <input className={bg}
