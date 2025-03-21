@@ -4,7 +4,7 @@ import ModalSubmitMessage from "./ModalSubmitMessage";
 import { handleSubmitNewContent } from "../utils/handleSubmitNewContent";
 import HandleSubmitMediaLinks from "./HandleSubmitMediaLinks";
 
-const Rythm = ({ type, setIsCurrentMainComponent }) => {
+const SubmitRythm = ({ type, setIsCurrentMainComponent }) => {
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
     const [link, setLink] = useState("");
@@ -98,4 +98,4 @@ const Rythm = ({ type, setIsCurrentMainComponent }) => {
     )
 }
 
-export default Rythm
+export default SubmitRythm

@@ -6,7 +6,7 @@ import HandleSubmitImgLinks from "./HanldeSubmitImgLinks";
 import HandleSubmitMediaLinks from "./HandleSubmitMediaLinks";
 
 
-const Biography = ({ type, setIsCurrentMainComponent }) => {
+const SubmitBiography = ({ type, setIsCurrentMainComponent }) => {
 
   const [title, setTitle] = useState("")
   const [secondaryTitle, setSecondaryTitle] = useState("")
@@ -94,4 +94,4 @@ const Biography = ({ type, setIsCurrentMainComponent }) => {
   )
 }
 
-export default Biography
+export default SubmitBiography

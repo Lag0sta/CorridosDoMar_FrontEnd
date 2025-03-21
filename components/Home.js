@@ -1,13 +1,12 @@
 import { useState } from 'react'
 
-import styles from '../styles/Home.module.css';
-
 import Header from './Header';
 import Research from './Research';
 import SignIn from './SignIn'
 import SignUp from './SignUp'
 import MenuModal from './MenuModal';
 import Submit from './Submit';
+import ShowElement from './ShowElement';
 function Home() {
 
   const [isSignModalOpen, setIsSignModalOpen] = useState(false)
@@ -15,6 +14,7 @@ function Home() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [isMenu, setIsMenu] = useState(false)
   const [currentMainComponent, setIsCurrentMainComponent] = useState("research");
+  const [selectedTitle, setSelectedTitle] = useState("")
 
   console.log("answer", currentMainComponent)
 
@@ -28,18 +28,27 @@ function Home() {
             setIsSignUp={setIsSignUp}
             setIsMenu={setIsMenu}
             setIsCurrentMainComponent={setIsCurrentMainComponent} />
-
-
         </header>
+
         <principal className=" row-start-2 row-end-5 col-start-1 col-end-5">
             <div className='h-[100%] mx-4'>
-              {currentMainComponent === "research" && <Research />}
-              {currentMainComponent === "submit" && <Submit setIsCurrentMainComponent={setIsCurrentMainComponent}/>}
+              {currentMainComponent === "research" && 
+                <Research currentMainComponent={currentMainComponent}
+                          setIsCurrentMainComponent={setIsCurrentMainComponent}
+                          setSelectedTitle={setSelectedTitle}
+                />
+              }
+              {currentMainComponent === "submit" && 
+                <Submit setIsCurrentMainComponent={setIsCurrentMainComponent}
+                />
+              }
+              {currentMainComponent === "showElement" && 
+                <ShowElement setIsCurrentMainComponent={setIsCurrentMainComponent}
+                             selectedTitle={selectedTitle}
+                />
+              }
             </div>
-
-
         </principal>
-
 
         {isSignModalOpen &&
           <div className="h-screen w-screen fixed inset-0 flex items-center justify-center z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -48,8 +57,6 @@ function Home() {
               {isSignIn && <SignIn setIsSignModalOpen={setIsSignModalOpen} />}
               {isSignUp && <SignUp setIsSignModalOpen={setIsSignModalOpen} />}
               {isMenu && <MenuModal setIsSignModalOpen={setIsSignModalOpen} />}
-
-
             </div>
 
           </div>

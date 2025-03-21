@@ -6,7 +6,7 @@ import { handleSubmitNewContent } from "../utils/handleSubmitNewContent";
 import HandleSubmitMediaLinks from "./HandleSubmitMediaLinks";
 
 
-const Song = ({ type, setIsCurrentMainComponent }) => {
+const SubmitSong = ({ type, setIsCurrentMainComponent }) => {
   const [title, setTitle] = useState("");
   const [secondaryTitle, setSecondaryTitle] = useState("");
   const [text, setText] = useState("");
@@ -97,4 +97,4 @@ const Song = ({ type, setIsCurrentMainComponent }) => {
   );
 };
 
-export default Song;
+export default SubmitSong;

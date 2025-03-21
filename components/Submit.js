@@ -1,8 +1,8 @@
 import { useState } from "react"
-import Biography from "./Biography"
-import Song from "./Song"
-import Rythm from "./Rythm"
-import Lexicon from "./Lexicon"
+import SubmitBiography from "./SubmitBiography"
+import SubmitSong from "./SubmitSong"
+import SubmitRythm from "./SubmitRythm"
+import SubmitLexicon from "./SubmitLexicon"
 
 const Submit = ({ setIsCurrentMainComponent }) => {
     const [type, setType] = useState("");
@@ -25,10 +25,10 @@ const Submit = ({ setIsCurrentMainComponent }) => {
                     </select>
                 </div>
 
-                {type === "biography" && <Biography type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
-                {type === "song" && <Song type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
-                {type === "rythm" && <Rythm type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
-                {type === "lexicon" && <Lexicon type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
+                {type === "biography" && <SubmitBiography type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
+                {type === "song" && <SubmitSong type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
+                {type === "rythm" && <SubmitRythm type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
+                {type === "lexicon" && <SubmitLexicon type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
             </div>
         </div>
     )

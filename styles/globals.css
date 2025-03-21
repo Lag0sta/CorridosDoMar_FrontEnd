@@ -5,8 +5,8 @@
 
 @font-face {
   font-family: "Edo";
-  src: local("Edo"),
-       url("../public/assets/fonts/edo.ttf") format("truetype");
+  src: local("edoszhq-regular"),
+       url("../public/assets/fonts/edoszhq-regular.ttf") format("truetype");
   font-weight: contours;
 }
 

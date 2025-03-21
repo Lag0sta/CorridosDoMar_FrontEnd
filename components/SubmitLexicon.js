@@ -5,7 +5,7 @@ import { useState } from "react"
 import ModalSubmitMessage from "./ModalSubmitMessage";
 import { handleSubmitNewContent } from "../utils/handleSubmitNewContent";
 
-const Lexicon = ({ type, setIsCurrentMainComponent }) => {
+const SubmitLexicon = ({ type, setIsCurrentMainComponent }) => {
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
     const [loading, setLoading] = useState(false);
@@ -58,4 +58,4 @@ const Lexicon = ({ type, setIsCurrentMainComponent }) => {
     )
 }
 
-export default Lexicon
+export default SubmitLexicon
