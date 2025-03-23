@@ -58,3 +58,26 @@ input {
 svg:hover {
   color: black
 }
+
+.couplet {
+  font-size : 1.125rem;
+  font-weight :  bold
+}
+
+.refrain {
+  font-size : 1rem ;
+  font-style : italic
+}
+
+.autre {
+  font-size : 1.125rem
+}
+
+.musicText {
+	display: flex;
+	flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: solid red;
+ 
+}

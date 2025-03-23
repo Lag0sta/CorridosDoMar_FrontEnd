@@ -8,8 +8,6 @@ import { handleRemoveLinks, handleSubmitMediaLink } from "../utils/submitLinksAc
 const HandleSubmitMediaLinks = () => {
 
     const [link, setLink] = useState("")
-    const [imgLink, setImgLink] = useState("")
-    const [ImgLinkError, setImgLinkError] = useState("")
     const [linkError, setLinkError] = useState("")
     const [radioChoice, setRadioChoice] = useState('');
 

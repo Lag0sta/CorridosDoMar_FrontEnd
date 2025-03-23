@@ -33,14 +33,32 @@ const ShowElement = ({ setIsCurrentMainComponent, selectedTitle }) => {
                     <h2 className="text-center">{content.title}</h2>
                     <h3 className="text-center">{content.secondaryTitle}</h3>
                     <div>
-                            {content.mainText.map((sentence, index) => (
-                                <p key={index} className="text-center">{sentence}</p>))}
-                            </div>
+                        {content.mainText.map((sentence, index) => (
+                            <p key={index} className="text-center">{sentence}</p>))}
+                    </div>
+                    <div>
+                        
+                    </div>
                 </div>
             );
             console.log('JSX', JSX)
+            setFormatedContent([JSX]);
+        }
 
+        if (type === "biography") {
+            console.log("ShowElement useEffect 2nd if() Actif")
 
+            const JSX = (
+                <div className="h-screen">
+                    <h2 className="text-center">{content.title}</h2>
+                    <h3 className="text-center">{content.secondaryTitle}</h3>
+                    <div>
+                        {content.mainText.map((sentence, index) => (
+                            <p key={index} className="text-center">{sentence}</p>))}
+                    </div>
+                </div>
+            );
+            console.log('JSX', JSX)
             setFormatedContent([JSX]);
         }
     }, [type])

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ModalSubmitMessage from "./ModalSubmitMessage";
 import { handleSubmitNewContent } from "../utils/handleSubmitNewContent";
 import HandleSubmitMediaLinks from "./HandleSubmitMediaLinks";
+import HandleSubmitMainText from "./HandleSubmitMainText";
 
 
 const SubmitSong = ({ type, setIsCurrentMainComponent }) => {
@@ -19,7 +20,7 @@ const SubmitSong = ({ type, setIsCurrentMainComponent }) => {
   const dispatch = useDispatch();
   const linksData = useSelector((state) => state.submitLinks.value);
   const userToken = useSelector((state) => state.user.value.token);
-
+console.log("linksData", linksData)
   console.log("song type", type);
 
   return (
@@ -44,14 +45,7 @@ const SubmitSong = ({ type, setIsCurrentMainComponent }) => {
       </div>
       <div>
         <div className="my-2 p-1 bg-gray-200 rounded-md">
-          <textarea
-            id="text"
-            className="h-[22rem] w-full rounded-md"
-            placeholder="Text"
-            type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
+          <HandleSubmitMainText/>
         </div>
 
         <HandleSubmitMediaLinks link={link}

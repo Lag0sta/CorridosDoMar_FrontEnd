@@ -47,7 +47,6 @@ export const handleSubmitMediaLink = ({ link, setLink, setLinkError, linksData, 
     setLink("");
 };
 
-
 //supprime le lien du reducer
 export const handleRemoveLinks = ({ index, dispatch ,imgLinkError, setImgLinkError, linkError, setLinkError }) => {
     console.log("index", index)
@@ -59,9 +58,7 @@ export const handleRemoveLinks = ({ index, dispatch ,imgLinkError, setImgLinkErr
     if (linkError) {
         setLinkError("")
         return
-    }
-   
-
+    }   
 }
 
 //reset tout le reducer

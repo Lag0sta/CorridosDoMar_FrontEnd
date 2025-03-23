@@ -15,7 +15,7 @@ export async function handleSubmitNewContent({
   dispatch,
    }) {
   
-  
+  console.log("submitLinksData",linksData)
   setIsSubmitModalOpen(true)
     console.log("click");
 
@@ -48,6 +48,8 @@ export async function handleSubmitNewContent({
         return;
       }
       if (type === "song") {
+        console.log("Avant envoi:", linksData);
+
         response2 = await fetch("http://localhost:3000/submits", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -57,7 +59,7 @@ export async function handleSubmitNewContent({
             secondaryTitle: secondaryTitle,
             mainText: mainText,
             reasearchText: text,
-            link: linksData,
+            links: linksData,
             createdBy: userId.userId,
           }),
         });
@@ -73,7 +75,7 @@ export async function handleSubmitNewContent({
               secondaryTitle: secondaryTitle,
               mainText: mainText,
               reasearchText: text,
-              link: linksData,
+              links: linksData,
               createdBy: userId.userId,
           }),
       });
@@ -89,7 +91,7 @@ export async function handleSubmitNewContent({
             secondaryTitle: secondaryTitle,
             mainText: mainText,
             reasearchText: text,
-            link: linksData,
+            links: linksData,
             createdBy: userId.userId,
           }),
           
