@@ -1,12 +1,16 @@
 import { useDispatch } from "react-redux";
-import { add, incrementIndex, decrementIndex, remove, clear } from "../reducers/submitMainText";
+import { add, incrementIndex, decrementIndex, edit, remove, clear } from "../reducers/submitMainText";
 
 
 //enregistre les textes du mainText dans le reducer
-export const handleSubmitText = ({ radioChoice, text, setText, setTextError, textData, dispatch }) => {
+export const handleSubmitText = ({ radioChoice, setRadioChoice, text, setText, setTextError, textData, dispatch }) => {
     console.log("click")
     console.log("text", text)
     setTextError("")
+    if(!radioChoice) {
+        setTextError("Please choose the type of text");
+        return;
+    }
     if (!text) {
         setTextError("Please enter a text");
         return;
@@ -18,7 +22,7 @@ export const handleSubmitText = ({ radioChoice, text, setText, setTextError, tex
 
     dispatch(add({text: mainText , type: radioChoice }));    
     setText("");
-
+    setRadioChoice("");
 }
 
 //enregistre les liens Medias dans le reducer
@@ -34,17 +38,15 @@ export const handleDecrementIndex = ({ index, dispatch }) => {
  };
 
 //supprime le lien du reducer
-export const handleRemoveLinks = ({ index, dispatch ,imgLinkError, setImgLinkError, linkError, setLinkError }) => {
+export const handleEditText = ({ index, dispatch ,editedText, setEditedText, selectedType, setSelectedType }) => {
     console.log("index", index)
-    dispatch(remove(index))
-    if (imgLinkError) {
-        setImgLinkError("")
-        return
-    }
-    if (linkError) {
-        setLinkError("")
-        return
-    }   
+    console.log("index, text, type", index, editedText, selectedType)
+    const mainText = [];
+    mainText.push(...editedText.split(/[\r\n]+/))
+    console.log("text :", mainText, "type", selectedType)
+    dispatch(edit({text : mainText, type: selectedType}))
+    setSelectedType("");
+    setEditedText([""]);
 }
 
 //reset tout le reducer

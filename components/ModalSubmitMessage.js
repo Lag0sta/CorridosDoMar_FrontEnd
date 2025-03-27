@@ -17,7 +17,7 @@ const ModalSubmitMessage = ({ error, setError, successMessage, setSuccessMessage
     return (
         <div className="h-screen w-screen fixed inset-0 flex items-center justify-center z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div className="fixed inset-0 bg-black bg-opacity-10 transition-opacity backdrop-filter backdrop-blur-sm" />
-            <div className="absolute h-[15%] w-[75%] bg-white z-1 rounded-xl">
+            <div className="absolute h-fit w-[75%] bg-white z-1 rounded-xl">
                 <div className='h-full w-full z-50 p-2 flex flex-col  justify-end items-center'>
                     {error && <p className="text-red-500 m-1">{error}</p>}
                     {successMessage && <p className="text-green-500">{successMessage}</p>}

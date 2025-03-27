@@ -34,9 +34,16 @@ const submitMainTextSlice = createSlice({
         state.value = newIndex;
     },
 
-    edit: (state, action) => {
-        
-    },
+        edit: (state, action) => {
+            console.log("editReducer", action.payload);  // Ajoute ceci pour inspecter le payload
+
+            const { text, type } = action.payload;
+            
+            state.value = state.value.map((item) =>
+              item.type === type ? { ...item, text } : item
+            );
+        },
+    
 
     remove: (state, action) => {
         state.value.splice(action.payload, 1);
