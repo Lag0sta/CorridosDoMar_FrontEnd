@@ -6,7 +6,8 @@ export async function handleSubmitNewContent({
   type, 
   title, 
   secondaryTitle, 
-  text, 
+  selectedSubType,
+  mainText, 
   linksData, 
   setIsSubmitModalOpen, 
   setError, 
@@ -16,18 +17,22 @@ export async function handleSubmitNewContent({
    }) {
   
   console.log("submitLinksData",linksData)
+  console.log("mainTextInSubmit :",mainText)
+  console.log("titleInSubmit", title)
+
   setIsSubmitModalOpen(true)
     console.log("click");
 
-    if (!title || !text) {
+    if (!title || !mainText || !selectedSubType) {
       setError("Please fill in the required fields");
       return;
     }
     setLoading(true);
-    const mainText = [];
-    mainText.push(...text.split(/[\r\n]+/))
+    // const mainText = [];
+    // mainText.push(...text.split(/[\r\n]+/))
     console.log("mainText", mainText)
-
+    console.log("submitNewContentYES ","type :", type, "title :", title, "secondaryTitle :", secondaryTitle, "selectedSubType :", selectedSubType, "mainText :", mainText, "linksData :", linksData)
+    
     try {
       const response1 = await fetch("http://localhost:3000/users/submit", {
         method: "POST",
@@ -57,8 +62,8 @@ export async function handleSubmitNewContent({
             type: type,
             title: title,
             secondaryTitle: secondaryTitle,
+            secondaryType: selectedSubType,
             mainText: mainText,
-            reasearchText: text,
             links: linksData,
             createdBy: userId.userId,
           }),
@@ -73,8 +78,8 @@ export async function handleSubmitNewContent({
               type: type,
               title: title,
               secondaryTitle: secondaryTitle,
+              secondaryType: selectedSubType,
               mainText: mainText,
-              reasearchText: text,
               links: linksData,
               createdBy: userId.userId,
           }),
@@ -90,7 +95,6 @@ export async function handleSubmitNewContent({
             title: title,
             secondaryTitle: secondaryTitle,
             mainText: mainText,
-            reasearchText: text,
             links: linksData,
             createdBy: userId.userId,
           }),
@@ -99,7 +103,6 @@ export async function handleSubmitNewContent({
 
           clearLinks(dispatch)
         
-
       } else if (type === "lexicon") {
         response2 = await fetch("http://localhost:3000/submits", {
           method: "POST",

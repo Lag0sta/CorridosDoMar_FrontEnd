@@ -23,7 +23,9 @@ const HandleSubmitMediaLinks = () => {
     return (
 
         <div className="mt-2 mb-4 p-1 bg-gray-200 rounded-md flex flex-col">
-            <h3>Link to music/video:</h3>
+            <div className="ml-2 mt-3">
+                <h3>Liens multimédias</h3>
+            </div>
 
             <div className="bg-gray-800 rounded-md flex mx-4 px-2 py-2">
                 <span className="text-red-500 text-sm">Attention!</span>
@@ -47,28 +49,28 @@ const HandleSubmitMediaLinks = () => {
 
                     <input
                         className="border-none w-full bg-gray-200 text-black p-2"
-                        placeholder="Music/video link"
+                        placeholder="http://..."
                         type="text"
                         value={link}
                         onChange={(e) => setLink(e.target.value)}
                     />
                     {linkError && <p className="text-red-500 text-sm">{linkError}</p>}
-                    <button className="px-2 py-1 rounded-lg bg-black text-md text-white "
+                    <button className="px-2 py-1 mt-1 rounded-md bg-black text-base text-white hover:bg-yellow-400 hover:text-black hover:text-lg"
                         onClick={() => handleSubmitMediaLink({
-                                        radioChoice, 
-                                        linksData, 
-                                        link, 
-                                        setLink,
-                                        dispatch, 
-                                        linkError, 
-                                        setLinkError
+                            radioChoice,
+                            linksData,
+                            link,
+                            setLink,
+                            dispatch,
+                            linkError,
+                            setLinkError
                         })}>
-                        submit
+                        Valider
                     </button>
 
                     <div className=" bg-black rounded-md">
                         {linksData.map((link, index) => (
-                            link.type !== "img" && 
+                            link.type !== "img" &&
                             (<div key={index} className=" px-2 flex flex-raw justify-between align-center my-2 pb-2 pt-1 border-b border-white  text-white">
                                 <span className="mr-6 text-sm text-yellow-500 inline-block" >{link.type}</span>
                                 <TextOverflow text={link.link} className="inline-block" />

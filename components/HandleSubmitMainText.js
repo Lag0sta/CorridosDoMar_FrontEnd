@@ -12,6 +12,7 @@ const HandleSubmitMainText = () => {
     const [textError, setTextError] = useState("")
     const [radioChoice, setRadioChoice] = useState("");
     const [selectedType, setSelectedType] = useState("");
+    const [isTextDataNull, setIsTextDataNull] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const dispatch = useDispatch();
@@ -39,12 +40,16 @@ const HandleSubmitMainText = () => {
                 console.log("setRadioChoice", textToEdit[i].type)
                 setSelectedType(textToEdit[i].type);
                 for (const text of textToEdit[i].text) {
-                        textArr.push(text + "\n");                    
+                    textArr.push(text + "\n");
                 }
             }
         }
         setEditedText(textArr.join(""));
     };
+
+    // if (!textData){
+    //     setIsTextDataNull(false);
+    // } else 
 
     return (
 
@@ -72,15 +77,18 @@ const HandleSubmitMainText = () => {
             </div>
 
             <div>
-                <div className="w-[90%] my-2 ml-4 py-2 px-2 border border-white border-3 rounded-md bg-white">
-                    <form>
-                    <label for="type">Choisir un type :</label>
-                    <select name="type" id="type" value={selectedType} onChange={(e) => handleRadioChange(e)}>
-                        <option value="couplet">Couplet</option>
-                        <option value="refrain">Refrain</option>
-                        <option value="autre">Autre</option>
-                    </select>
-                </form>
+                <div className="w-[90%] my-2 ml-4 py-2 px-2 rounded-md bg-white">
+                    <form className="flex justify-between items-center h-10 px-2 mb-2 bg-gray-800 rounded-md">
+                        <div className="text-yellow-400">
+                            <label for="type">Choisir un type :</label>
+                        </div>
+                        <select name="type" id="type" value={radioChoice} onChange={(e) => handleRadioChange(e)}>
+                            <option value="">Type</option>
+                            <option value="couplet">Couplet</option>
+                            <option value="refrain">Refrain</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </form>
                     <textarea
                         className="h-[22rem] border-none w-full bg-gray-200 text-black p-2"
                         placeholder="Text"
@@ -89,25 +97,25 @@ const HandleSubmitMainText = () => {
                         onChange={(e) => setText(e.target.value)}
                     />
 
-                    {textError && <p className="text-red-500 text-sm">{textError}</p>}
-                    <button className="px-2 py-1 rounded-lg bg-black text-md text-white "
-                            onClick={() => handleSubmitText({
-                                              radioChoice,
-                                              setRadioChoice,
-                                              text,
-                                              setText,
-                                              textData,
-                                              dispatch,
-                                              textError,
-                                              setTextError
-                                           })
-                                    }
+                    {textError && <p className="text-red-500 text-base">{textError}</p>}
+                    <button className="px-2 py-1 rounded-md bg-black text-base text-white hover:bg-yellow-400 hover:text-black hover:text-lg"
+                        onClick={() => handleSubmitText({
+                            radioChoice,
+                            setRadioChoice,
+                            text,
+                            setText,
+                            textData,
+                            dispatch,
+                            textError,
+                            setTextError
+                        })
+                        }
                     >
-                        submit
+                        Valider
                     </button>
 
                 </div>
-                <div className=" bg-white rounded-md py-2">
+                {textData.length !== 0 && <div className=" bg-white rounded-md py-2">
                     {textData.map((textInfo, index) => (
 
                         (<div key={index} className=" px-2 flex justify-between items-center my-1 ">
@@ -150,7 +158,7 @@ const HandleSubmitMainText = () => {
 
                         </div>)
                     ))}
-                </div>
+                </div>}
             </div>
             {isModalOpen && (
                 <div className="h-screen w-screen fixed inset-0 flex items-center justify-center z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -158,10 +166,10 @@ const HandleSubmitMainText = () => {
                     <div className="absolute h-fit w-[75%] bg-white z-1 rounded-xl">
                         <div className='h-auto w-full z-50 p-2 flex flex-col  justify-end items-center'>
                             <HandleEditMainText selectedType={selectedType}
-                                                setSelectedType={setSelectedType}
-                                                editedText={editedText}
-                                                setEditedText={setEditedText}
-                                                setIsModalOpen={setIsModalOpen}/>
+                                setSelectedType={setSelectedType}
+                                editedText={editedText}
+                                setEditedText={setEditedText}
+                                setIsModalOpen={setIsModalOpen} />
                         </div>
                     </div>
                 </div>

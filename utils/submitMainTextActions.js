@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { add, incrementIndex, decrementIndex, edit, remove, clear } from "../reducers/submitMainText";
+import { add, incrementIndex, decrementIndex, edit, remove, } from "../reducers/submitMainText";
 
 
 //enregistre les textes du mainText dans le reducer
@@ -50,7 +50,7 @@ export const handleEditText = ({ index, dispatch ,editedText, setEditedText, sel
 }
 
 //reset tout le reducer
-export const clearLinks = (dispatch) => {
-    dispatch(clear())
+export const handleDeleteText = ({dispatch}) => {
+    dispatch(remove());
 }
 
