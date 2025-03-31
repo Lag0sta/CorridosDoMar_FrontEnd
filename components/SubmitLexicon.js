@@ -1,8 +1,9 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { useState } from "react"
 
 import ModalSubmitMessage from "./ModalSubmitMessage";
+import HandleSubmitMainText from "./HandleSubmitMainText";
 import { handleSubmitNewContent } from "../utils/handleSubmitNewContent";
 
 const SubmitLexicon = ({ type, setIsCurrentMainComponent }) => {
@@ -13,34 +14,45 @@ const SubmitLexicon = ({ type, setIsCurrentMainComponent }) => {
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
 
+    const dispatch = useDispatch();
     const userToken = useSelector((state) => state.user.value.token);
+    const mainText = useSelector((state) => state.submitMainText.value);
+
 
     return (
         <div className=" h-[100%]">
             <div className="my-2 p-1 bg-gray-200 rounded-md">
-                <input placeholder="word"
+                <input className="border-none text-black"
+                    placeholder="mot"
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)} />
             </div >
             <div>
-                <div className="my-2 p-1 bg-gray-200 rounded-md">
-                    <textarea className="h-[28rem] w-full rounded-md"
-                        placeholder="meaning"
-                        type="text"
-                        value={text}
-                        onChange={(e) => setText(e.target.value)} />
-
-                </div>
+            
+                <HandleSubmitMainText
+                    type={type}
+                    setIsCurrentMainComponent={setIsCurrentMainComponent}
+                />
 
             </div>
             <div className="flex justify-center">
                 <span
                     className="px-10 py-3 text-base bg-black text-white rounded-md"
-                    onClick={() => handleSubmitNewContent({ userToken, type, title, text, setIsSubmitModalOpen, setSuccessMessage, setError, setLoading, setIsCurrentMainComponent, setIsCurrentMainComponent })}
-
+                    onClick={() => handleSubmitNewContent({ 
+                                     userToken, 
+                                     type, 
+                                     title, 
+                                     mainText, 
+                                     dispatch,
+                                     setIsSubmitModalOpen, 
+                                     setSuccessMessage, 
+                                     setError, 
+                                     setLoading, 
+                                     setIsCurrentMainComponent, 
+                                     setIsCurrentMainComponent })}
                 >
-                    {loading ? "Submitting..." : "Submit"}
+                    {loading ? "En Cours..." : "Valider"}
                 </span>
                 {isSubmitModalOpen &&
                     <ModalSubmitMessage

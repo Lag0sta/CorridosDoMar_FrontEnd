@@ -32,19 +32,19 @@ const SubmitSong = ({ type, setIsCurrentMainComponent }) => {
         <input
           id="title"
           className="border-none"
-          placeholder="Title"
+          placeholder="Titre"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <input
+        {/* <input
           id="secondaryTitle"
           className="border-none"
           placeholder="Created by"
           type="text"
           value={secondaryTitle}
           onChange={(e) => setSecondaryTitle(e.target.value)}
-        />
+        /> */}
       </div>
       <div className="my-2">
         <form className="flex justify-between items-center h-10 px-2 bg-black rounded-md">
@@ -64,7 +64,7 @@ const SubmitSong = ({ type, setIsCurrentMainComponent }) => {
       </div>
       <div>
         <div className="my-2 p-1 bg-gray-200 rounded-md">
-          <HandleSubmitMainText />
+          <HandleSubmitMainText type={type}/>
         </div>
 
         <HandleSubmitMediaLinks link={link}

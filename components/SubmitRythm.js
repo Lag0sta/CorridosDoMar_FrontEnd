@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ModalSubmitMessage from "./ModalSubmitMessage";
 import { handleSubmitNewContent } from "../utils/handleSubmitNewContent";
 import HandleSubmitMediaLinks from "./HandleSubmitMediaLinks";
+import HandleSubmitMainText from "./HandleSubmitMainText";
 
 const SubmitRythm = ({ type, setIsCurrentMainComponent }) => {
     const [title, setTitle] = useState("");
@@ -17,6 +18,7 @@ const SubmitRythm = ({ type, setIsCurrentMainComponent }) => {
     const dispatch = useDispatch();
     const linksData = useSelector((state) => state.submitLinks.value);
     const userToken = useSelector((state) => state.user.value.token);
+    const mainText = useSelector((state) => state.submitMainText.value);
 
 
     const handleOptionChange = (event) => {
@@ -24,38 +26,35 @@ const SubmitRythm = ({ type, setIsCurrentMainComponent }) => {
     };
 
     return (
-        <div className=" ">
+        <div className="">
             <div className="my-2 p-1 bg-gray-200 rounded-md">
                 <input
                     id="title"
                     className="border-none"
-                    placeholder="Title"
+                    placeholder="Titre"
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
             </div >
             <div className="mb-1 p-1 bg-gray-200 rounded-md" >
-                <span className="">Specification: </span>
+                <span className="">Spécification: </span>
                 <select className="outline-none border-none" onChange={(e) => handleOptionChange(e)}>
-                    <option value="">Select an option</option>
+                    <option value="">Choisissez une option</option>
                     <option value="Capoeira">Capoeira</option>
                     <option value="Samba">Samba</option>
                     <option value="Orichas">Orichas</option>
                     <option value="Other">Other</option>
                 </select>
             </div>
-            <div className="my-2 p-1 bg-gray-200 rounded-md">
-                <textarea
-                    id="text"
-                    className="h-[11rem] w-full rounded-md"
-                    placeholder="Text"
-                    type="text"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                />
-            </div>
+            
             <div>
+
+            <HandleSubmitMainText
+                    type={type}
+                    setIsCurrentMainComponent={setIsCurrentMainComponent}
+                />
+
             <HandleSubmitMediaLinks link={link}
                                 setLink={setLink}
         />
@@ -68,7 +67,7 @@ const SubmitRythm = ({ type, setIsCurrentMainComponent }) => {
                         type, 
                         title, 
                         secondaryTitle, 
-                        text, 
+                        mainText, 
                         linksData, 
                         setIsSubmitModalOpen, 
                         setSuccessMessage, 
@@ -80,7 +79,7 @@ const SubmitRythm = ({ type, setIsCurrentMainComponent }) => {
                        })
                  }
                 >
-                    {loading ? "Submitting..." : "Submit"}
+                    {loading ? "En Cours..." : "Valider"    }
                 </span>
 
                 {isSubmitModalOpen &&

@@ -1,4 +1,5 @@
 import { clearLinks } from "../utils/submitLinksActions"
+import { clearMainText } from "../utils/submitMainTextActions"
 import { clear } from "../reducers/submitLinks";
 
 export async function handleSubmitNewContent({
@@ -23,7 +24,7 @@ export async function handleSubmitNewContent({
   setIsSubmitModalOpen(true)
     console.log("click");
 
-    if (!title || !mainText || !selectedSubType) {
+    if (!title || !mainText) {
       setError("Please fill in the required fields");
       return;
     }
@@ -69,6 +70,7 @@ export async function handleSubmitNewContent({
           }),
         });
         clearLinks(dispatch)
+        clearMainText(dispatch)
 
       }else if (type === "rythm") {
         response2 = await fetch("http://localhost:3000/submits", {
@@ -85,6 +87,7 @@ export async function handleSubmitNewContent({
           }),
       });
       clearLinks(dispatch)
+      clearMainText(dispatch)
 
       } else if (type === "biography") {
         response2 = await fetch("http://localhost:3000/submits", {
@@ -102,8 +105,10 @@ export async function handleSubmitNewContent({
         });
 
           clearLinks(dispatch)
+          clearMainText(dispatch)
         
       } else if (type === "lexicon") {
+        console.log('LEXICON AVANT ENVOI', mainText, type, title)
         response2 = await fetch("http://localhost:3000/submits", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -114,6 +119,8 @@ export async function handleSubmitNewContent({
               createdBy: userId.userId,
           }),
       });
+      clearMainText(dispatch)
+
       }
 
       const data = await response2.json();

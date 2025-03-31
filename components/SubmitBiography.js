@@ -4,6 +4,7 @@ import ModalSubmitMessage from "./ModalSubmitMessage";
 import { handleSubmitNewContent } from "../utils/handleSubmitNewContent";
 import HandleSubmitImgLinks from "./HanldeSubmitImgLinks";
 import HandleSubmitMediaLinks from "./HandleSubmitMediaLinks";
+import HandleSubmitMainText from "./HandleSubmitMainText";
 
 
 const SubmitBiography = ({ type, setIsCurrentMainComponent }) => {
@@ -21,63 +22,62 @@ const SubmitBiography = ({ type, setIsCurrentMainComponent }) => {
   const dispatch = useDispatch();
   const linksData = useSelector((state) => state.submitLinks.value);
   const userToken = useSelector((state) => state.user.value.token);
+  const mainText = useSelector((state) => state.submitMainText.value);
 
   return (
     <div className="">
       <div className="my-2 p-1 bg-gray-200 rounded-md">
         <input className="border-none"
-          placeholder="Name/Appelido/title"
+          placeholder="Nom/Apelido/titre"
           type="text"
           onChange={(e) => setTitle(e.target.value)}
         />
         <div>
-          <input className="border-none"
+          {/* <input className="border-none"
             placeholder="profession"
             type="text"
             onChange={(e) => setSecondaryTitle(e.target.value)}
-          />
+          /> */}
         </div>
 
       </div >
-      <HandleSubmitImgLinks imgLink={imgLink} 
-                            setImgLink={setImgLink}
-                            />   
-                              
+      {/* <HandleSubmitImgLinks imgLink={imgLink}
+        setImgLink={setImgLink}
+      /> */}
+
       <div>
-        <div className="my-2 p-1 bg-gray-200 rounded-md">
-          <textarea className="h-[22rem] w-full rounded-md"
-            placeholder="Biography"
-            type="text"
-            onChange={(e) => setText(e.target.value)}
-          />
-        </div>
+
+        <HandleSubmitMainText
+                    type={type}
+                    setIsCurrentMainComponent={setIsCurrentMainComponent}
+                />
 
         <HandleSubmitMediaLinks link={link}
-                                setLink={setLink}
+          setLink={setLink}
         />
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center pb-2">
         <span
           className="px-10 py-3 text-base bg-black text-white rounded-md"
-          onClick={() => handleSubmitNewContent({ 
-                          userToken, 
-                          type, 
-                          title, 
-                          secondaryTitle, 
-                          text, 
-                          linksData, 
-                          setIsSubmitModalOpen, 
-                          setSuccessMessage, 
-                          setError, 
-                          setLoading, 
-                          setIsCurrentMainComponent, 
-                          dispatch, 
-                          setIsCurrentMainComponent 
-                         })
-                   }
+          onClick={() => handleSubmitNewContent({
+            userToken,
+            type,
+            title,
+            secondaryTitle,
+            mainText,
+            linksData,
+            setIsSubmitModalOpen,
+            setSuccessMessage,
+            setError,
+            setLoading,
+            setIsCurrentMainComponent,
+            dispatch,
+            setIsCurrentMainComponent
+          })
+          }
 
         >
-          {loading ? "Submitting..." : "Submit"}
+          {loading ? "En Cours..." : "Valider"}
         </span>
         {isSubmitModalOpen &&
           <ModalSubmitMessage

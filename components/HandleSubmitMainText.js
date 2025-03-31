@@ -2,17 +2,16 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import HandleEditMainText from "./HandleEditMainText";
-import { handleDecrementIndex, handleIncrementIndex, handleEditText, handleSubmitText } from "../utils/submitMainTextActions";
+import { handleDecrementIndex, handleIncrementIndex, handleSubmitText } from "../utils/submitMainTextActions";
 
-const HandleSubmitMainText = () => {
+const HandleSubmitMainText = ({ type }) => {
 
     const [text, setText] = useState("")
     const [editedText, setEditedText] = useState([""])
 
     const [textError, setTextError] = useState("")
-    const [radioChoice, setRadioChoice] = useState("");
+    const [radioChoice, setRadioChoice] = useState("autre");
     const [selectedType, setSelectedType] = useState("");
-    const [isTextDataNull, setIsTextDataNull] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const dispatch = useDispatch();
@@ -47,48 +46,56 @@ const HandleSubmitMainText = () => {
         setEditedText(textArr.join(""));
     };
 
-    // if (!textData){
-    //     setIsTextDataNull(false);
-    // } else 
-
     return (
 
         <div className="mt-2 mb-4 p-1 bg-gray-200 rounded-md flex flex-col">
             <h3>Texte Principale</h3>
 
-            <div className="bg-gray-800 rounded-md flex flex-col mx-4 px-2 py-2 max-h-[9rem] overflow-y-auto">
+            {type === "song" && (
+                <div className="bg-gray-800 rounded-md flex flex-col mx-4 px-2 py-2 max-h-[9rem] overflow-y-auto">
+                    <span className="text-white font-bold ">Notice: </span>
+                    <span className=" text-yellow-500 text-sm">l'ajout de texte pour les paroles de chansons ce fait d'une manière différente du reste. A chaque submit, la partie du texte s'affichera juste en dessous vous permettants de voir ce que vous êtes en train de faire.
+                        Vous pouvez modifier ces parties en cliquant dessus.</span>
+                    <span className="font-bold text-white mt-4">
+                        Veuillez choisir entre :</span>
+                    <div className="mx-4 text-sm text-yellow-500 text-sm">
+                        <div className="my-2">
+                            <span className="text-sm"><span className="font-bold text-base text-white">Couplet</span> pour les couplets ou textes principaux.</span>
+                        </div>
+                        <div className="my-2">
+                            <span className="text-sm"><span className="font-bold text-base text-white">Refrain</span> pour les refrains.</span>
+                        </div>
+                        <div className="my-2">
+                            <span className="text-sm"><span className="font-bold text-base text-white">Autre</span> pour un texte quelconque qui ne corresponde pas aux deux précédents.</span>
+                        </div>
+                    </div>
+                </div>)
+            }
 
-                <span className="text-white font-bold ">Notice: </span>
-                <span className=" text-yellow-500 text-sm">l'ajout de texte pour les paroles de chansons ce fait d'une manière différente du reste. A chaque submit, la partie du texte s'affichera juste en dessous vous permettants de voir ce que vous êtes en train de faire.
-                    Vous pouvez modifier ces parties en cliquant dessus.</span>
-                <span className="font-bold text-white mt-4">
-                    Veuillez choisir entre :</span>
-                <div className="mx-4 text-sm text-yellow-500 text-sm">
-                    <div className="my-2">
-                        <span className="text-sm"><span className="font-bold text-base text-white">Couplet</span> pour les couplets ou textes principaux.</span>
-                    </div>
-                    <div className="my-2">
-                        <span className="text-sm"><span className="font-bold text-base text-white">Refrain</span> pour les refrains.</span>
-                    </div>
-                    <div className="my-2">
-                        <span className="text-sm"><span className="font-bold text-base text-white">Autre</span> pour un texte quelconque qui ne corresponde pas aux deux précédents.</span>
-                    </div>
-                </div>
-            </div>
+            {type !== "song" && (
+                <div className="bg-gray-800 rounded-md flex flex-col mx-4 px-2 py-2 max-h-[9rem] overflow-y-auto">
+                    <span className="text-white font-bold ">Notice: </span>
+                    <span className=" text-yellow-500 text-sm">A chaque ajout de texte, la partie du texte s'affichera juste en dessous vous permettants de voir ce que vous êtes en train de faire.
+                        Vous pouvez modifier ces parties en cliquant dessus.</span>
+                </div>)
+            }
 
             <div>
                 <div className="w-[90%] my-2 ml-4 py-2 px-2 rounded-md bg-white">
-                    <form className="flex justify-between items-center h-10 px-2 mb-2 bg-gray-800 rounded-md">
-                        <div className="text-yellow-400">
-                            <label for="type">Choisir un type :</label>
-                        </div>
-                        <select name="type" id="type" value={radioChoice} onChange={(e) => handleRadioChange(e)}>
-                            <option value="">Type</option>
-                            <option value="couplet">Couplet</option>
-                            <option value="refrain">Refrain</option>
-                            <option value="autre">Autre</option>
-                        </select>
-                    </form>
+                    {type === "song" && (
+                        <form className="flex justify-between items-center h-10 px-2 mb-2 bg-gray-800 rounded-md">
+                            <div className="text-yellow-400">
+                                <label for="type">Choisir un type :</label>
+                            </div>
+                            <select name="type" id="type" value={radioChoice} onChange={(e) => handleRadioChange(e)}>
+                                <option value="">Type</option>
+                                <option value="couplet">Couplet</option>
+                                <option value="refrain">Refrain</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </form>
+                    )}
+                    
                     <textarea
                         className="h-[22rem] border-none w-full bg-gray-200 text-black p-2"
                         placeholder="Text"

@@ -17,11 +17,11 @@ const Submit = ({ setIsCurrentMainComponent }) => {
                 <div className="mb-1 p-1 bg-gray-200 rounded-md" >
                     <span className="">type: </span>
                     <select className="outline-none border-none" onChange={(e) => handleOptionChange(e)}>
-                        <option value="">Select an option</option>
-                        <option value="biography">Biography</option>
-                        <option value="song">Song</option>
-                        <option value="rythm">Rythm</option>
-                        <option value="lexicon">Lexicon</option>
+                        <option value="">choisissez une option</option>
+                        <option value="biography">biographie</option>
+                        <option value="song">chanson</option>
+                        <option value="rythm">Rythmes</option>
+                        <option value="lexicon">Lexique</option>
                     </select>
                 </div>
 

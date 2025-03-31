@@ -32,7 +32,6 @@ const Research = ({ currentMainComponent, setIsCurrentMainComponent, setSelected
         setType(event.target.value);
     };
 
-
     const handleFilterChange = (e) => {
         //valeur du type de media
         const filterValue = e.target.value;
@@ -168,12 +167,11 @@ const Research = ({ currentMainComponent, setIsCurrentMainComponent, setSelected
                     {/* .flat() permet d'enlever les sous tableaux et de les mettre dans un seul tableau */}
                     {content.flat().map((item, index) => (
                         <div className={item.type} key={index}>
-                            <div className="m-2 text-yellow-500 flex flex-row justify-between">
+                            <div className="m-2 text-yellow-500 flex flex-row justify-between items-center">
                                 <span className="text-lg cursor-pointer hover:text-white" onClick={() => handleTitleClick(item.title)}>
                                     {item.title}
                                 </span>
-                                <span>{item.secondaryTitle}</span>
-                                <span>{item.type}</span>
+                                <span className="text-xs text-white">{item.type}</span>
                             </div>
                             <div className="border-b-2 border-gray-500 mb-2" />
                         </div>
@@ -184,7 +182,7 @@ const Research = ({ currentMainComponent, setIsCurrentMainComponent, setSelected
             {
                 isModalOpen && (
                     <div className="min-h-fit w-full my-6">
-                        {infoContent}
+                        {/* {infoContent} */}
                     </div>)
             }
         </div >

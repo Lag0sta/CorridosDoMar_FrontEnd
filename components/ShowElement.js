@@ -1,3 +1,5 @@
+import ReactPlayer from 'react-player';
+
 import { useSelector } from "react-redux"
 import { useState, useEffect } from "react"
 
@@ -24,49 +26,44 @@ const ShowElement = ({ setIsCurrentMainComponent, selectedTitle }) => {
                 setContent(element);
             }
         }
-
-        if (type === "song") {
-            console.log("ShowElement useEffect 2nd if() Actif")
-
             const JSX = (
                 <div className="h-screen">
-                    <h2 className="text-center">{content.title}</h2>
-                    <h3 className="text-center">{content.secondaryTitle}</h3>
-                    <div>
-                        {content.mainText.map((sentence, index) => (
-                            <p key={index} className="text-center">{sentence}</p>))}
+                     {type === "biography" && content.links.map((link,) => (
+                        <div>
+                            {link.type === "img" && <img src={link.link} />}                    
+                        </div>
+                    ))}
+                    <div className='mt-6 mb-6'>
+                        <h2 className="text-center -mb-1 leading-tight ">{content.title}</h2>
+                        <h3 className="text-center">{content.secondaryTitle}</h3>
                     </div>
-                    <div>
+    
+                    {(type === "song" || type === "biography" || type === "rythm" || type === "lexicon") && content.mainText.map((mtContent, index) => (
+                        <div key={index} className={`${mtContent.type} + flex flex-col justify-center`}>
+                            {mtContent.text.map((sentence, index) => (
+                                <span key={index} className='text-center'>{sentence}</span>
+                            ))}
+                        </div>))}
+    
+                    {(type === "song" || type === "biography" || type === "rythm") && content.links.map((link, index) => (
                         
-                    </div>
+                        <div className='w-[350px] h-[197px]'>
+                            {(link.type === "video" && link.link) && (
+                                <ReactPlayer key={index} url={link.link} controls width="100%" height="100%" />
+                            )}
+                            {(link.type === "audio" && link.link) && (
+                                <ReactPlayer key={index} url={link.link} controls width="100%" height="100%" />
+                            )}
+    
+                        </div>
+    
+                    ))}
                 </div>
             );
-            console.log('JSX', JSX)
-            setFormatedContent([JSX]);
-        }
 
-        if (type === "biography") {
-            console.log("ShowElement useEffect 2nd if() Actif")
-
-            const JSX = (
-                <div className="h-screen">
-                    <h2 className="text-center">{content.title}</h2>
-                    <h3 className="text-center">{content.secondaryTitle}</h3>
-                    <div>
-                        {content.mainText.map((sentence, index) => (
-                            <p key={index} className="text-center">{sentence}</p>))}
-                    </div>
-                </div>
-            );
-            console.log('JSX', JSX)
-            setFormatedContent([JSX]);
-        }
+        setFormatedContent([JSX]);
+        
     }, [type])
-
-
-
-
-
 
     return (
         <div className=" h-[100%]">
