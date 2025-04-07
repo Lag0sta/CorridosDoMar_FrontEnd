@@ -1,4 +1,13 @@
-const ModalSubmitMessage = ({ error, setError, successMessage, setSuccessMessage ,setIsSubmitModalOpen, setIsCurrentMainComponent }) => {
+
+interface Props {
+  error : string;
+  setError : (value : string) => void;
+  successMessage : string;
+  setSuccessMessage : (value : string) => void;
+  setIsSubmitModalOpen : (value : boolean) => void;
+  setCurrentMainComponent : (value : string) => void
+}
+const ModalSubmitMessage = ({ error, setError, successMessage, setSuccessMessage ,setIsSubmitModalOpen, setCurrentMainComponent } : Props) => {
     const handleOK = () => {
         if (error) {
           setIsSubmitModalOpen(false)
@@ -6,13 +15,12 @@ const ModalSubmitMessage = ({ error, setError, successMessage, setSuccessMessage
     
         if (successMessage) {
           setIsSubmitModalOpen(false)
-          setIsCurrentMainComponent("research")
+          setCurrentMainComponent("research")
           
         }
         setError("")
         setSuccessMessage("")
       }
-    
 
     return (
         <div className="h-screen w-screen fixed inset-0 flex items-center justify-center z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">

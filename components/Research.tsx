@@ -1,38 +1,52 @@
-import { useState, useEffect, useLayoutEffect, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux";
+import * as React from "react";
+import { useState, useEffect } from "react"
+import { useDispatch } from "react-redux";
+import { useAppSelector } from '../store/hooks';
 import { motion } from "framer-motion";
-import { fetchData } from "../reducers/search";
+import { fetchData } from "../store/reducers/search";
 
-const Research = ({ currentMainComponent, setIsCurrentMainComponent, setSelectedTitle }) => {
 
-    const [search, setSearch] = useState("");
-    const [title, setTitle] = useState("");
-    const [infoContent, setInfoContent] = useState("");
-    const [type, setType] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [selectedMediaTypes, setSelectedMediaTypes] = useState([]);
+// Define Item interface to specify the expected structure
+interface Item {
+    type: string;
+    title: string;
+    // Add other properties if needed
+}
+interface Props {
+    currentMainComponent: string;
+    setCurrentMainComponent: (component: string) => void;
+    setSelectedTitle: (title: string) => void;
+}
+
+const Research = ({ currentMainComponent, setCurrentMainComponent, setSelectedTitle } : Props) => {
+
+    const [search, setSearch] = useState<string>("");
+    const [title, setTitle] = useState<string>("");
+    const [type, setType] = useState<string>("");
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [selectedMediaTypes, setSelectedMediaTypes] = useState<string[]>([]);
     console.log("selectedMediaTypes :", selectedMediaTypes)
 
     const dispatch = useDispatch();
-    const dataFetched = useSelector((state) => state.search.value)
+    
+    // Type the fetched data as Item[]
+    const dataFetched = useAppSelector((state) => state.search.value as Item[]);  
     console.log("dataSearch", dataFetched)
-    const [content, setContent] = useState([]);
+    const [content, setContent] = useState<any[]>([]);
     console.log("content", content)
-    const researchRef = useRef(null);
 
     // console.log("songs", songs)
 
-    const handleToggle = () => {
+    const handleToggle = () : void => {
         setIsOpen(!isOpen);
     };
 
-    const handleOptionChange = (event) => {
-        setType(event.target.value);
+    const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        setType(e.target.value);
     };
 
-    const handleFilterChange = (e) => {
+    const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         //valeur du type de media
         const filterValue = e.target.value;
 
@@ -69,15 +83,15 @@ const Research = ({ currentMainComponent, setIsCurrentMainComponent, setSelected
             });
 
             console.log("dataFetched", dataFetched)
-            setContent([filteredData]);
+            setContent(filteredData);
             setIsLoading(false);
 
 
     }, [dataFetched])
 
-    const handleTitleClick = (title) => {
+    const handleTitleClick = (title : string) : void => {
         setSelectedTitle(title);
-        setIsCurrentMainComponent("showElement");
+        setCurrentMainComponent("showElement");
     };
 
     return (
@@ -101,7 +115,8 @@ const Research = ({ currentMainComponent, setIsCurrentMainComponent, setSelected
                                     onChange={(e) => setTitle(e.target.value)} />
                                 <button
                                     className="px-5 py-1 ml-1 rounded-md bg-black text-white        hover:bg-white hover:text-black hover:border hover:border-black"
-                                    onClick={handleTitleSearch}>Submit</button>
+                                    // onClick={handleTitleSearch}
+                                    >Submit</button>
                             </div>
                         }
 
@@ -137,25 +152,25 @@ const Research = ({ currentMainComponent, setIsCurrentMainComponent, setSelected
                             <div className="flex justify-between">
                                 <div>
                                     <input type="checkbox" name="mediaType" value="song" onChange={handleFilterChange} />
-                                    <label for="song">Song</label>
+                                    <label htmlFor ="song">Song</label>
                                 </div>
                             </div>
                             <div className="flex justify-between" >
                                 <div>
                                     <input type="checkbox" name="mediaType" value="rythm" onChange={handleFilterChange} />
-                                    <label for="rythm">Rythm</label>
+                                    <label htmlFor ="rythm">Rythm</label>
                                 </div>
                             </div>
                             <div className="flex justify-between">
                                 <div>
                                     <input type="checkbox" name="mediaType" value="biography" onChange={handleFilterChange} />
-                                    <label for="biography">Biography</label>
+                                    <label htmlFor ="biography">Biography</label>
                                 </div>
                             </div>
                             <div className="flex justify-between">
                                 <div>
                                     <input type="checkbox" name="mediaType" value="lexicon" onChange={handleFilterChange} />
-                                    <label for="lexicon">Lexicon</label>
+                                    <label htmlFor ="lexicon">Lexicon</label>
                                 </div>
                             </div>
                         </div>
@@ -178,13 +193,6 @@ const Research = ({ currentMainComponent, setIsCurrentMainComponent, setSelected
                     ))}
                 </div>
             
-
-            {
-                isModalOpen && (
-                    <div className="min-h-fit w-full my-6">
-                        {/* {infoContent} */}
-                    </div>)
-            }
         </div >
     );
 }

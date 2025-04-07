@@ -1,27 +1,34 @@
 import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../store/hooks";
 import ModalSubmitMessage from "./ModalSubmitMessage";
 import { handleSubmitNewContent } from "../utils/handleSubmitNewContent";
 import HandleSubmitMediaLinks from "./HandleSubmitMediaLinks";
 import HandleSubmitMainText from "./HandleSubmitMainText";
 
-const SubmitRythm = ({ type, setIsCurrentMainComponent }) => {
-    const [title, setTitle] = useState("");
-    const [text, setText] = useState("");
-    const [link, setLink] = useState("");
-    const [error, setError] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
-    const [secondaryTitle, setSecondaryTitle] = useState("");
+interface Props {
+    type: string,
+    setCurrentMainComponent: (value: string) => void
+}
+
+const SubmitRythm = ({ type, setCurrentMainComponent }: Props) => {
+    const [title, setTitle] = useState<string>("");
+    const [text, setText] = useState<string>("");
+    const [link, setLink] = useState<string>("");
+    const [error, setError] = useState<string>("");
+    const [successMessage, setSuccessMessage] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
+    const [isSubmitModalOpen, setIsSubmitModalOpen] = useState<boolean>(false);
+    const [secondaryTitle, setSecondaryTitle] = useState<string>("");
+    const [selectedSubType, setSelectedSubType] = useState<string>("");
 
     const dispatch = useDispatch();
-    const linksData = useSelector((state) => state.submitLinks.value);
-    const userToken = useSelector((state) => state.user.value.token);
-    const mainText = useSelector((state) => state.submitMainText.value);
+    const linksData = useAppSelector((state) => state.submitLinks.value);
+    const userToken = useAppSelector((state) => state.user.value.token);
+    const mainText = useAppSelector((state) => state.submitMainText.value);
 
 
-    const handleOptionChange = (event) => {
+    const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSecondaryTitle(event.target.value);
     };
 
@@ -47,39 +54,19 @@ const SubmitRythm = ({ type, setIsCurrentMainComponent }) => {
                     <option value="Other">Other</option>
                 </select>
             </div>
-            
+
             <div>
-
-            <HandleSubmitMainText
-                    type={type}
-                    setIsCurrentMainComponent={setIsCurrentMainComponent}
-                />
-
-            <HandleSubmitMediaLinks link={link}
-                                setLink={setLink}
-        />
+                <HandleSubmitMainText type={type} />
+                <HandleSubmitMediaLinks />
             </div>
             <div className="flex flex-col justify-center items-center">
                 <span
                     className="px-10 py-3 text-base bg-black text-white rounded-md"
-                    onClick={() => handleSubmitNewContent({ 
-                        userToken, 
-                        type, 
-                        title, 
-                        secondaryTitle, 
-                        mainText, 
-                        linksData, 
-                        setIsSubmitModalOpen, 
-                        setSuccessMessage, 
-                        setError, 
-                        setLoading, 
-                        setIsCurrentMainComponent, 
-                        dispatch, 
-                        setIsCurrentMainComponent 
-                       })
-                 }
+                    onClick={() => handleSubmitNewContent({
+                        userToken,type, title, secondaryTitle, selectedSubType, mainText, linksData, setIsSubmitModalOpen, setSuccessMessage, setError, setLoading, setCurrentMainComponent, dispatch
+                      })}
                 >
-                    {loading ? "En Cours..." : "Valider"    }
+                    {loading ? "En Cours..." : "Valider"}
                 </span>
 
                 {isSubmitModalOpen &&
@@ -89,7 +76,7 @@ const SubmitRythm = ({ type, setIsCurrentMainComponent }) => {
                         successMessage={successMessage}
                         setSuccessMessage={setSuccessMessage}
                         setIsSubmitModalOpen={setIsSubmitModalOpen}
-                        setIsCurrentMainComponent={setIsCurrentMainComponent}
+                        setCurrentMainComponent={setCurrentMainComponent}
                     />
                 }
             </div>

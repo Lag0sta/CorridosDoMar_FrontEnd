@@ -1,12 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useAppSelector } from "../store/hooks";
 
 import { handleEditText, handleDeleteText } from "../utils/submitMainTextActions";
 
-const HandleEditMainText = ({ selectedType, setSelectedType, editedText, setEditedText, setIsModalOpen }) => {
+interface Props {
+    type: string;
+    selectedType: string;
+    setSelectedType: (value: string) => void;
+    editedText: string[];
+    setEditedText: (value: string[]) => void;
+    indexToRemove: number;
+    setIndexToRemove: (value: number) => void;
+    setIsModalOpen: (value: boolean) => void;
+}
+const HandleEditMainText = ({ type, selectedType, setSelectedType, editedText, setEditedText, indexToRemove, setIndexToRemove, setIsModalOpen, }: Props) => {
 
     console.log("selectedType", selectedType)
     const dispatch = useDispatch();
-    const textToEdit = useSelector((state) => state.submitMainText.value)
+    const textToEdit = useAppSelector((state) => state.submitMainText.value)
     console.log("textToEdit", textToEdit)
     console.log("editedTextHandleEditMainText", editedText)
 
@@ -22,7 +33,7 @@ const HandleEditMainText = ({ selectedType, setSelectedType, editedText, setEdit
 
     const HandleDelete = () => {
         setIsModalOpen(false);
-        handleDeleteText({ dispatch })
+        handleDeleteText({ dispatch, index: indexToRemove })
     }
 
     return (
@@ -51,21 +62,31 @@ const HandleEditMainText = ({ selectedType, setSelectedType, editedText, setEdit
             <div>
                 <h3>Texte à éditer</h3>
             </div>
-            <div className="my-2">
-                <form className="flex justify-between items-center h-10 px-2 bg-black rounded-md">
-                    <div className="text-yellow-500">
-                        <label for="type">Choisir un type :</label>
-                    </div>
-                    <select name="type" id="type" value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
-                        <option value="couplet">Couplet</option>
-                        <option value="refrain">Refrain</option>
-                        <option value="autre">Autre</option>
-                    </select>
-                </form>
-            </div>
-            <textarea className="h-[20rem] text-center overflow-y bg-gray-100 rounded-xl"
-                value={editedText}
-                onChange={(e) => setEditedText(e.target.value)}
+            {type === "song" &&
+                <div className="my-2">
+                    <form className="flex justify-between items-center h-10 px-2 bg-black rounded-md">
+                        <div className="text-yellow-500">
+                            <label htmlFor="type">Choisir un type :</label>
+                        </div>
+                        <select name="type" id="type" value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
+                            <option value="couplet">Couplet</option>
+                            <option value="refrain">Refrain</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </form>
+                </div>
+            }
+
+            <textarea
+                className="h-[20rem] text-center overflow-y bg-gray-100 rounded-xl"
+                // Convertit le tableau en chaîne avec des sauts de ligne
+                value={editedText.join("\n")}
+                onChange={(e) => {
+                    // Divise la chaîne par les sauts de ligne et ajoute un \n à chaque élément
+                    const arr = []
+                    arr.push(e.target.value)
+                    setEditedText(arr);
+                }}
             />
             <div className="my-1 flex justify-center">
                 <span className="mt-2 px-2 py-1 rounded-md bg-black text-base text-white hover:bg-yellow-400 hover:text-black hover:text-lg"

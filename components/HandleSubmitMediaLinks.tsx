@@ -1,25 +1,34 @@
 import TextOverflow from "react-text-overflow";
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { add, remove, } from "../reducers/submitLinks";
+import { useAppSelector } from "../store/hooks";
+import { add, remove, } from "../store/reducers/submitLinks";
 import ModalSubmitMessage from "./ModalSubmitMessage";
 import { handleRemoveLinks, handleSubmitMediaLink } from "../utils/submitLinksActions";
+import { RootState } from "../store/store";
+
+interface LinkValue {
+    link: string;
+    type: string;
+}
 
 const HandleSubmitMediaLinks = () => {
 
-    const [link, setLink] = useState("")
-    const [linkError, setLinkError] = useState("")
-    const [radioChoice, setRadioChoice] = useState('');
+    const [link, setLink] = useState<string>("")
+    const [linkError, setLinkError] = useState<string>("")
+    const [imgLinkError, setImgLinkError] = useState<string>("")
+    const [radioChoice, setRadioChoice] = useState<string>("");
 
 
     const dispatch = useDispatch();
-    const linksData = useSelector((state) => state.submitLinks.value);
+    const linksData = useAppSelector((state: RootState) => state.submitLinks.value as LinkValue[]);
 
 
     // enregistre le choix de media
-    const handleRadioChange = (event) => {
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRadioChoice(event.target.value);
     };
+
     return (
 
         <div className="mt-2 mb-4 p-1 bg-gray-200 rounded-md flex flex-col">
@@ -39,11 +48,11 @@ const HandleSubmitMediaLinks = () => {
                     <div className="flex">
                         <div>
                             <input type="radio" name="mediaType" value="audio" onChange={(e) => handleRadioChange(e)} />
-                            <label for="audio">Audio</label>
+                            <label htmlFor="audio">Audio</label>
                         </div>
                         <div>
                             <input type="radio" name="mediaType" value="video" onChange={(e) => handleRadioChange(e)} />
-                            <label for="video">Video</label>
+                            <label htmlFor="video">Video</label>
                         </div>
                     </div>
 
@@ -62,21 +71,21 @@ const HandleSubmitMediaLinks = () => {
                             link,
                             setLink,
                             dispatch,
-                            linkError,
                             setLinkError
                         })}>
                         Valider
                     </button>
 
                     <div className=" bg-black rounded-md">
-                        {linksData.map((link, index) => (
+                        {linksData.map((link: LinkValue, index: number) => (
                             link.type !== "img" &&
                             (<div key={index} className=" px-2 flex flex-raw justify-between align-center my-2 pb-2 pt-1 border-b border-white  text-white">
                                 <span className="mr-6 text-sm text-yellow-500 inline-block" >{link.type}</span>
-                                <TextOverflow text={link.link} className="inline-block" />
-
+                                <span className="inline-block">
+                                    <TextOverflow text={link.link} />
+                                </span>
                                 <button className="ml-6 px-2 py-1 rounded-lg bg-yellow-500 text-xs text-white "
-                                    onClick={() => handleRemoveLinks({ index, dispatch, linkError, setLinkError })}>
+                                    onClick={() => handleRemoveLinks({ index, dispatch, linkError, setLinkError, imgLinkError, setImgLinkError })}>
                                     REMOVE
                                 </button>
                             </div>)

@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 const initialState = {
   value: {
     token: "",
     email: "",
     avatar: "",
     pseudo: "",
+    submits: []
   },
 };
 
@@ -24,10 +26,10 @@ const userSlice = createSlice({
     },
    
     logout: (state) => {
-      state.value.token = null;
-      state.value.email = null;
-      state.value.pseudo = null;
-      state.value.avatar = null; 
+      state.value.token = "";
+      state.value.email = "";
+      state.value.pseudo = "";
+      state.value.avatar = ""; 
     },
   },
 });

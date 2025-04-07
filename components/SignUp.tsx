@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react'
 
-
-function SignUp({ setIsSignModalOpen, setIsSignUp }) {
+interface Props {
+    setIsModalOpen : (value : boolean) => void
+    setIsSignUp : (value : boolean) => void
+}
+    
+function SignUp({ setIsModalOpen, setIsSignUp } : Props) {
     const [pseudo, setPseudo] = useState('')
     const [capoeiraGroup, setCapoeiraGroup] = useState('')
     const [email, setEmail] = useState('')
@@ -19,21 +23,19 @@ function SignUp({ setIsSignModalOpen, setIsSignUp }) {
 
     useEffect(() => {
         if (!password || !confirmPassword) {
-            setBg('bg-none border-2 border-black')
+            setBg('w-full bg-gray-200 border-none border-2 border-black placeholder-gray-800 placeholder:italic text-ms px-2 py-1')
         } else if (password === confirmPassword) {
-            setBg(' border-2 border-green-500')
+            setBg('w-full bg-green-500 border-none')
         } else {
-            setBg(' border-2 border-red-500')
+            setBg('w-full bg-red-500 border-none')
         }
-
-
     }, [password, confirmPassword])
 
 
     function handleRegister() {
         console.log('click')
 
-        if(!pseudo || !email || !password || !confirmPassword){
+        if (!pseudo || !email || !password || !confirmPassword) {
             setErrorMessage("Veuillez remplir tous les champs avec un *");
             return
         }
@@ -63,7 +65,7 @@ function SignUp({ setIsSignModalOpen, setIsSignUp }) {
                     setEmail("");
                     setPassword("");
                     setConfirmPassword("");
-                    setIsSignModalOpen(false);
+                    setIsModalOpen(false);
                 } else {
                     setErrorMessage("Une erreur est survenue. Veuillez réessayer.");
 
@@ -73,61 +75,73 @@ function SignUp({ setIsSignModalOpen, setIsSignUp }) {
 
     function handleClose() {
         console.log("click")
-        setIsSignModalOpen(false)
+        setIsModalOpen(false)
     }
 
 
     return (
 
 
-        <div className="h-fit w-72 bg-white rounded rounded-xl flex flex-col justify-center items-center">
-            <div className='absolute  w-64 top-15 translate-x-[2%] translate-y-[-745%] flex justify-end'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" onClick={handleClose} />
+        <div className="h-fit flex flex-col justify-center items-center">
+            <div className='w-full flex flex-reverse justify-end '>
+                <svg className="size-10 fill-gray-800 stroke-white m-2 hover:fill-white hover:stroke-gray-800 hover:size-12 hover:m-1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    onClick={handleClose}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
             </div>
 
-            <div className='w-full h-[90%] flex flex-col justify-evenly items-center'>
-                <h2 className="m-4 text-4xl">SignUp</h2>
+            <div className='w-full h-[90%] flex flex-col justify-evenly items-center '>
+                <h3 className="m-4 text-4xl">Rejoindre</h3>
                 <div className={`h-20 w-20 mb-4 flex justify-center items-center rounded-full border-2 border-black ${!pseudo && !capoeiraGroup ? 'bg-bobe' : 'bg-yellow-500'}`}>
-                    <span style={{ 'font-family': 'CaptureIt', 'font-size': '34px' }}>{defaultAvatar}</span>
+                    <span style={{ fontFamily: 'CaptureIt', fontSize: '34px' }}>{defaultAvatar}</span>
                 </div>
-                <div>
-                    <input placeholder='Pseudo'
+                <div className='mb-1 w-[70%] flex justify-center'>
+                    <input className='w-full border-none bg-gray-200 placeholder-gray-800 placeholder:italic py-1 px-2 '
+                        placeholder='Pseudo'
                         value={pseudo}
                         onChange={(e) => setPseudo(e.target.value)} /><span className='text-red-500'>*</span>
                 </div>
-                <div>
-                    <input placeholder='Groupe de Capoeira'
+                <div className='mb-1 w-[70%] flex justify-center'>
+                    <input className='w-full border-none bg-gray-200 placeholder-gray-800 placeholder:italic py-1 px-2'
+                        placeholder='Groupe de Capoeira'
                         value={capoeiraGroup}
                         onChange={(e) => setCapoeiraGroup(e.target.value)} /><span className='opacity-0'>*</span>
                 </div>
-                <div>
-                    <input placeholder='Email'
+                <div className='mb-1 w-[70%] flex justify-center'>
+                    <input className='w-full border-none bg-gray-200 placeholder-gray-800 placeholder:italic py-1 px-2'
+                        placeholder='Email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)} /><span className='text-red-500'>*</span>
                 </div>
-                <div className='flex flex-col justify-between'>
-                    <div>
+                <div className='flex flex-col justify-between mb-1 w-[70%]  '>
+                    <div className='w-full flex justify-center'>
                         <input className={bg}
                             type="password"
                             placeholder='Mot de passe'
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)} /><span className='text-red-500'>*</span>
+                            onChange={(e) => setPassword(e.target.value)} />
+                        <span className='text-red-500'>*</span>
                     </div>
-                </div>
-                <div>
+                    <div className='w-full flex justify-center'>
                     <input className={bg}
                         type="password"
                         placeholder='Confirmer le mot de passe'
                         value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)} /><span className='text-red-500'>*</span>
+                        onChange={(e) => setConfirmPassword(e.target.value)} />
+                    <span className='text-red-500'>*</span>
                 </div>
+                </div>
+                
                 <div className="text-[8px] text-red-500">
                     {errorMessage}
                 </div>
-                <button className="h-10 w-16 mt-4 mb-6 rounded rounded-xl hover:bg-gray-300 hover:text-black"
-                    onClick={handleRegister}>Confirmer</button>
+                <span className="mt-4 mb-6 px-3 py-2 bg-black text-base text-white rounded rounded-full hover:bg-yellow-400 hover:text-black hover:font-bold"
+                    onClick={handleRegister}>Confirmer</span>
             </div>
         </div>
     )

@@ -1,49 +1,72 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from '../store/hooks';
+
 
 import HandleEditMainText from "./HandleEditMainText";
 import { handleDecrementIndex, handleIncrementIndex, handleSubmitText } from "../utils/submitMainTextActions";
 
-const HandleSubmitMainText = ({ type }) => {
+interface Props {
+    type: string
+}
 
-    const [text, setText] = useState("")
-    const [editedText, setEditedText] = useState([""])
+const HandleSubmitMainText = ({ type, }: Props) => {
 
-    const [textError, setTextError] = useState("")
-    const [radioChoice, setRadioChoice] = useState("autre");
-    const [selectedType, setSelectedType] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [text, setText] = useState<string>("")
+    const [editedText, setEditedText] = useState<string[]>([])
+    const [indexToRemove, setIndexToRemove] = useState<number>(-1)
+
+    const [textError, setTextError] = useState<string>("")
+    const [radioChoice, setRadioChoice] = useState<string>("autre");
+    const [selectedType, setSelectedType] = useState<string>("");
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const dispatch = useDispatch();
-    const textData = useSelector((state) => state.submitMainText.value);
-    const textToEdit = useSelector((state) => state.submitMainText.value)
+    const textData = useAppSelector((state) => state.submitMainText.value);
+    const textToEdit = useAppSelector((state) => state.submitMainText.value)
     console.log("textData", textData)
     console.log("textToEdit", textToEdit)
     console.log("editedTextHandleSubmitMainText", editedText)
 
     // enregistre le choix type de texte
-    const handleRadioChange = (event) => {
+    const handleRadioChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setRadioChoice(event.target.value);
     };
 
-    const HandleEditTextClick = (index) => {
+    useEffect(() => {
+        console.log("editedText updated:", editedText);
+    }, [editedText]);
+    console.log("editedText before sending as props:", Array.isArray(editedText), editedText);
+
+
+    const HandleEditTextClick = (index: number): void => {
         console.log("click Edit")
         setIsModalOpen(true);
         console.log("indexToEdit", index)
-        console.log("textToEdit[index]", textToEdit[index.index])
+        console.log("textToEdit[index]", textToEdit[index])
 
-        const textArr = [];
+        const textArr: string[] = [];
 
         for (let i = 0; i < textToEdit.length; i++) {
-            if (index.index === i) {
-                console.log("setRadioChoice", textToEdit[i].type)
+            if (index === i) {
+                console.log("setRadioChoice", textToEdit[i].type);
                 setSelectedType(textToEdit[i].type);
-                for (const text of textToEdit[i].text) {
-                    textArr.push(text + "\n");
+                
+                // Vérifie si textToEdit[i].text est un tableau
+                if (Array.isArray(textToEdit[i].text)) {
+                    for (const text of textToEdit[i].text) {
+                        textArr.push(text + "\n");
+                                console.log("textARRRRRRRR", textArr)
+
+                    }
+                } else {
+                    // Si textToEdit[i].text est une chaîne de caractères, on la traite comme tel
+                    textArr.push(textToEdit[i].text + "\n");
                 }
+                setIndexToRemove(index);
             }
         }
-        setEditedText(textArr.join(""));
+        setEditedText(textArr);
     };
 
     return (
@@ -85,9 +108,9 @@ const HandleSubmitMainText = ({ type }) => {
                     {type === "song" && (
                         <form className="flex justify-between items-center h-10 px-2 mb-2 bg-gray-800 rounded-md">
                             <div className="text-yellow-400">
-                                <label for="type">Choisir un type :</label>
+                                <label htmlFor="type">Choisir un type :</label>
                             </div>
-                            <select name="type" id="type" value={radioChoice} onChange={(e) => handleRadioChange(e)}>
+                            <select name="type" id="type" value={radioChoice} onChange={handleRadioChange}>
                                 <option value="">Type</option>
                                 <option value="couplet">Couplet</option>
                                 <option value="refrain">Refrain</option>
@@ -95,11 +118,10 @@ const HandleSubmitMainText = ({ type }) => {
                             </select>
                         </form>
                     )}
-                    
+
                     <textarea
                         className="h-[22rem] border-none w-full bg-gray-200 text-black p-2"
                         placeholder="Text"
-                        type="text"
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                     />
@@ -111,9 +133,7 @@ const HandleSubmitMainText = ({ type }) => {
                             setRadioChoice,
                             text,
                             setText,
-                            textData,
                             dispatch,
-                            textError,
                             setTextError
                         })
                         }
@@ -159,7 +179,7 @@ const HandleSubmitMainText = ({ type }) => {
                                 strokeWidth={1.5}
                                 stroke="currentColor"
                                 className="size-6"
-                                onClick={() => HandleEditTextClick({ index, })}>
+                                onClick={() => HandleEditTextClick(index)}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                             </svg>
 
@@ -172,11 +192,15 @@ const HandleSubmitMainText = ({ type }) => {
                     <div className="fixed inset-0 bg-black bg-opacity-10 transition-opacity backdrop-filter backdrop-blur-sm" />
                     <div className="absolute h-fit w-[75%] bg-white z-1 rounded-xl">
                         <div className='h-auto w-full z-50 p-2 flex flex-col  justify-end items-center'>
-                            <HandleEditMainText selectedType={selectedType}
+                            <HandleEditMainText 
+                                type={type}
+                                selectedType={selectedType}
                                 setSelectedType={setSelectedType}
                                 editedText={editedText}
-                                setEditedText={setEditedText}
-                                setIsModalOpen={setIsModalOpen} />
+                                setEditedText={(value: string[]) => setEditedText(value)}
+                                indexToRemove={indexToRemove}
+                                setIndexToRemove={(value: number) => setIndexToRemove(value)}
+                                setIsModalOpen={(value: boolean) => setIsModalOpen(value)} />
                         </div>
                     </div>
                 </div>

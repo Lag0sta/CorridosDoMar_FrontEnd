@@ -1,13 +1,19 @@
+import * as React from "react";
+
 import { useState } from "react"
 import SubmitBiography from "./SubmitBiography"
 import SubmitSong from "./SubmitSong"
 import SubmitRythm from "./SubmitRythm"
 import SubmitLexicon from "./SubmitLexicon"
 
-const Submit = ({ setIsCurrentMainComponent }) => {
+
+interface Props {
+    setCurrentMainComponent: (value: string) => void
+}
+const Submit = ({ setCurrentMainComponent } : Props) => {
     const [type, setType] = useState("");
 
-    const handleOptionChange = (event) => {
+    const handleOptionChange = (event : React.ChangeEvent<HTMLSelectElement>) : void => {
         setType(event.target.value);
     };
 
@@ -25,10 +31,10 @@ const Submit = ({ setIsCurrentMainComponent }) => {
                     </select>
                 </div>
 
-                {type === "biography" && <SubmitBiography type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
-                {type === "song" && <SubmitSong type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
-                {type === "rythm" && <SubmitRythm type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
-                {type === "lexicon" && <SubmitLexicon type={type} setIsCurrentMainComponent={setIsCurrentMainComponent} />}
+                {type === "biography" && <SubmitBiography type={type} setCurrentMainComponent={(value : string) => setCurrentMainComponent(value)} />}
+                {type === "song" && <SubmitSong type={type} setCurrentMainComponent={(value : string) => setCurrentMainComponent(value)} />}
+                {type === "rythm" && <SubmitRythm type={type} setCurrentMainComponent={(value : string) => setCurrentMainComponent(value)} />}
+                {type === "lexicon" && <SubmitLexicon type={type} setCurrentMainComponent={(value: string) => setCurrentMainComponent(value)} />}
             </div>
         </div>
     )

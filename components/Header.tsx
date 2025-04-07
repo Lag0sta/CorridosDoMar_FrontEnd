@@ -1,65 +1,71 @@
+import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive'
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../store/hooks';
 
-import { login } from "../reducers/user";
+interface Props {
+  setIsModalOpen: (value: boolean) => void,
+  setIsSignIn : (value: boolean) => void,
+  setIsSignUp : (value: boolean) => void,
+  setIsMenu : (value: boolean) => void,
+  setCurrentMainComponent : (value: string) => void
+}
 
+function Header({ setIsModalOpen, setIsSignIn, setIsSignUp, setIsMenu, setCurrentMainComponent } : Props) {
+  const [msg, setMsg] = useState<React.ReactNode>(null);
+  const [submit, setSubmit] = useState<React.ReactNode>(null)
+  const [search, setSearch] = useState<React.ReactNode>(null)
+  const [language, setLanguage] = useState<React.ReactNode>(null)
+  const [header, setHeader] = useState<React.ReactNode>(null)
+  const token = useAppSelector((state) => state.user.value.token);
+  const defaultAvatar = useAppSelector((state) => state.user.value.avatar);
 
-function Header({ setIsSignModalOpen, setIsSignIn, setIsSignUp, setIsMenu, setIsCurrentMainComponent }) {
-  const [msg, setMsg] = useState(null);
-  const [submit, setSubmit] = useState(null)
-  const [search, setSearch] = useState(null)
-  const [language, setLanguage] = useState(null)
-  const [header, setHeader] = useState(null)
-  const token = useSelector((state) => state.user.value.token);
-  const defaultAvatar = useSelector((state) => state.user.value.avatar);
+  let avatar : any = defaultAvatar;
 
-  let avatar;
+  const isLandscape : boolean = useMediaQuery({ query: '(orientation: landscape)' });
+  const isPortrait : boolean = useMediaQuery({ query: '(orientation: portrait)' });
 
-  const isLandscape = useMediaQuery({ query: '(orientation: landscape)' });
-  const isPortrait = useMediaQuery({ query: '(orientation: portrait)' });
-
-  const isXs = useMediaQuery({
+  const isXs : boolean = useMediaQuery({
     query: '(min-width: 0px) and (max-width: 575px)'
   })
-  const isSm = useMediaQuery({
+  const isSm : boolean = useMediaQuery({
     query: '(min-width: 576px) and (max-width: 767px)'
   })
-  const isMd = useMediaQuery({
+  const isMd : boolean = useMediaQuery({
     query: '(min-width: 768px) and (max-width: 1023px)'
   });
 
-  const isLg = useMediaQuery({
+  const isLg : boolean = useMediaQuery({
     query: '(min-width: 1024px) and (max-width: 1279px) '
   });
 
-  const isXl = useMediaQuery({
+  const isXl : boolean = useMediaQuery({
     query: '(min-width: 1280px) and (max-width: 1535px)'
   });
 
-  const is2xl = useMediaQuery({
+  const is2xl : boolean = useMediaQuery({
     query: '(min-width: 1536px)'
   });
 
-  function handleSignInClick() {
+  function handleSignInClick() : void {
     console.log("click")
-    setIsSignModalOpen(true)
+    setIsModalOpen(true)
     setIsSignIn(true)
     setIsSignUp(false)
     setIsMenu(false)
   }
 
-  function handleSignUpClick() {
+  function handleSignUpClick() : void {
     console.log("click")
-    setIsSignModalOpen(true)
+    setIsModalOpen(true)
     setIsSignIn(false)
     setIsSignUp(true)
     setIsMenu(false)
 
   }
 
-  function openMenuModal() {
-    setIsSignModalOpen(true)
+  function openMenuModal() : void {
+    setIsModalOpen(true)
     setIsSignIn(false)
     setIsSignUp(false)
     setIsMenu(true)
@@ -108,12 +114,12 @@ function Header({ setIsSignModalOpen, setIsSignIn, setIsSignUp, setIsMenu, setIs
     </div>
   }
 
-  function handleSubmit() {
-    setIsCurrentMainComponent("submit")
+  function handleSubmit(): void {
+    setCurrentMainComponent("submit")
   }
 
-  function handleSearch() {
-    setIsCurrentMainComponent("research")
+  function handleSearch(): void {
+    setCurrentMainComponent("research")
   }
 
 
@@ -131,15 +137,18 @@ function Header({ setIsSignModalOpen, setIsSignIn, setIsSignUp, setIsMenu, setIs
           <div className="h-[70px] w-1/3 flex flex-col justify-center items-center">
             {avatar}
           </div>
-          {!token && (<div className="flex justify-center items-center portrait: landscape:xs:h-[90%] landscape:xs:w-fit landscape:xs:flex-col landscape:lg:flex-row ">
-            <button className="flex justify-center  items-center m-1 w-11 h-6 rounded-md hover:bg-white hover:text-black text-xs" onClick={() => handleSignInClick()}>Log In</button>
-            <button className="flex justify-center  items-center m-1 w-11 h-6 rounded-md hover:bg-white hover:text-black text-xs" onClick={() => handleSignUpClick()}>Join</button>
+          <div className='w-1/3 flex'>
+          {!token && (<div className="flex justify-center items-center landscape:xs:h-[90%] landscape:xs:w-[50%] landscape:xs:flex-col landscape:lg:flex-row ">
+            <span className="flex justify-center bg-black text-white px-2 py-1 items-center m-1 rounded-md text-ms hover:bg-white hover:text-black hover:font-bold hover:mr-0" onClick={() => handleSignInClick()}>Connexion</span>
+            <span className="flex justify-center bg-black text-white px-2 py-1 items-center m-1  rounded-md text-ms hover:bg-white hover:text-black hover:font-bold hover:ml-0 " onClick={() => handleSignUpClick()}>Rejoindre</span>
           </div>)}
-          {token && (<div className="flex justify-center items-center portrait: landscape:xs:h-[90%] landscape:xs:w-fit landscape:xs:flex-col landscape:lg:flex-row ">
+          {token && (<div className="flex justify-center items-center landscape:xs:h-[90%] landscape:xs:w-[50%] landscape:xs:flex-col landscape:lg:flex-row">
             <button className='mx-1  xs:h-10 lg:h-7 xs:w-10 xs:rounded-md lg:rounded-lg flex justify-center items-center hover:bg-white'>{msg}</button>
             <button className='mx-1 xs:h-10 lg:h-7 xs:w-10 xs:rounded-md lg:rounded-lg flex justify-center items-center hover:bg-white'
               onClick={handleSubmit}>{submit}</button>
           </div>)}
+          </div>
+          
         </div>
 
       </div>

@@ -2,8 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 
 const forgotPassword = () => {
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
+  const [email, setEmail] = useState<string>('')
+  const [message, setMessage] = useState<string>('')
   const handleSubmit = async () => {
     try {
       const response = await fetch('http://localhost:3000/users/forgotPassword', {
