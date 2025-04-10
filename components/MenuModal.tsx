@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { useAppSelector } from '../store/hooks';
-
+import { clearToken } from '../store/reducers/auth';
 import { logout } from "../store/reducers/user";
 
 interface Props {
@@ -22,6 +22,7 @@ function MenuModal({ setIsModalOpen, setCurrentMainComponent } : Props) {
     dispatch  (logout())
     setIsModalOpen(false)
     setCurrentMainComponent("research")
+    dispatch(clearToken())
   }
 
   function handleUserProfile() {

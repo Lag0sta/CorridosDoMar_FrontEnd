@@ -45,7 +45,7 @@ function SignUp({ setIsModalOpen, setIsSignUp } : Props) {
         }
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-        fetch("http://localhost:3000/users/signup", {
+        fetch("http://localhost:3000/auths/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

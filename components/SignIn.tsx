@@ -5,9 +5,9 @@ import Link from 'next/link'
 import { login } from "../store/reducers/user";
 
 interface Props {
-  setIsModalOpen : (value : boolean) => void;
+  setIsModalOpen: (value: boolean) => void;
 }
-function SignIn({ setIsModalOpen } : Props) {
+function SignIn({ setIsModalOpen }: Props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
@@ -18,38 +18,54 @@ function SignIn({ setIsModalOpen } : Props) {
     setIsModalOpen(false)
   }
 
-  function handleConnection() {
-    fetch("http://localhost:3000/users/signin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    }).then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          console.log("user :", data, "token :", data.token, "avatar :", data.avatar)
-          dispatch(
-            login({
-              email: email,
-              pseudo: data.pseudo,
-              city: data.city,
-              avatar: data.avatar,
-              token: data.token,
-              favorites: data.favorites,
-            })
-          );
-          handleClose();
-          setEmail("");
-          setPassword("");
-          setErrorMessage("");
-          setIsModalOpen(false);
-        } else {
-          setErrorMessage("Email ou Mot de passe incorrect"); // affiche un message d'error si le mdp ou email pas bon ou manquant
-        }
+  async function handleConnection() {
+    try {
+      // Envoi de la requête
+      const response: Response = await fetch("http://localhost:3000/auths/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+        credentials: "include", // Important : permet d'envoyer le cookie httpOnly (refreshToken)
+
       });
+  
+      // Vérifie si la réponse est correcte et la convertit en JSON
+      const data = await response.json();
+  
+      if (data.result) {
+         // Le token est récupéré ici et peut être stocké dans le localStorage ou dans un context
+        localStorage.setItem("token", data.token);
+
+        alert("Connexion réussie !");
+        console.log("user :", data, "avatar :", data.avatar);
+  
+        dispatch(
+          login({
+            email: email,
+            pseudo: data.pseudo,
+            city: data.city,
+            avatar: data.avatar,
+            favorites: data.favorites,
+          })
+        );
+  
+        handleClose();
+        setEmail("");
+        setPassword("");
+        setErrorMessage("");
+        setIsModalOpen(false);
+      } else {
+        setErrorMessage("Email ou Mot de passe incorrect");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la connexion :", error);
+      setErrorMessage("Une erreur s'est produite lors de la connexion");
+    }
   }
+  
 
   return (
     <div className="h-fit flex flex-col justify-center items-center">
@@ -70,18 +86,18 @@ function SignIn({ setIsModalOpen } : Props) {
 
         <div className='mb-1 w-[70%] flex justify-center'>
           <input className='w-full border-none bg-gray-200 placeholder-gray-800 placeholder:italic py-1 px-2 '
-                 placeholder='Email'
-                 value={email}
-                 onChange={(e) => setEmail(e.target.value)} />
+            placeholder='Email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className='mb-1 w-[70%] flex justify-center'>
           <input className='w-full border-none bg-gray-200 placeholder-gray-800 placeholder:italic py-1 px-2 '
-                 type="password"
-                 placeholder='Mot de passe'
-                 value={password}
-                 onChange={(e) => setPassword(e.target.value)} />
+            type="password"
+            placeholder='Mot de passe'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)} />
         </div>
-        
+
 
         <span className="px-3 py-2 mt-4 bg-black text-base text-white rounded rounded-full hover:bg-yellow-400 hover:text-black hover:font-bold"
           onClick={handleConnection}
