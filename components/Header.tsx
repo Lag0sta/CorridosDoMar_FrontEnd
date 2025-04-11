@@ -124,7 +124,6 @@ function Header({ setIsModalOpen, setIsSignIn, setIsSignUp, setIsMenu, setCurren
     setCurrentMainComponent("research")
   }
 
-
   return (
     <div>
       {header}
@@ -150,12 +149,8 @@ function Header({ setIsModalOpen, setIsSignIn, setIsSignUp, setIsMenu, setCurren
                 onClick={handleSubmit}>{submit}</button>
             </div>)}
           </div>
-
         </div>
-
       </div>
-
-
     </div>
   )
 }

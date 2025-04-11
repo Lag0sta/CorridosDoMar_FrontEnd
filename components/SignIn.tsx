@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import Link from 'next/link'
 
 import { login } from "../store/reducers/user";
+import { save } from '../store/reducers/auth';
 
 interface Props {
   setIsModalOpen: (value: boolean) => void;
@@ -37,8 +38,7 @@ function SignIn({ setIsModalOpen }: Props) {
   
       if (data.result) {
          // Le token est récupéré ici et peut être stocké dans le localStorage ou dans un context
-        localStorage.setItem("token", data.token);
-
+        localStorage.setItem("token", data.accessToken);
         alert("Connexion réussie !");
         console.log("user :", data, "avatar :", data.avatar);
   
@@ -51,7 +51,8 @@ function SignIn({ setIsModalOpen }: Props) {
             favorites: data.favorites,
           })
         );
-  
+        dispatch(save(data.accessToken))
+
         handleClose();
         setEmail("");
         setPassword("");

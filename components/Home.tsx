@@ -32,6 +32,8 @@ function Home() {
     const checkToken = () => {
       const token = localStorage.getItem("token");
       if (token && token !== tokenInStore) {
+        console.log("HomeToken", token)
+        console.log("yolo")
         // Met à jour le store avec le nouveau token
         dispatch(save(token)); // Action Redux pour sauvegarder le token
         localStorage.removeItem("token"); // Supprime le token de localStorage

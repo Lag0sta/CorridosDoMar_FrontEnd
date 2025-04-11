@@ -1,53 +1,38 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../store/hooks";
+import UserInfo from "./UserInfo";
 
+interface User {
+    avatar: string;
+    pseudo: string;
+    group: string;
+    email: string;
+    password?: string; // à ne pas afficher !
+}
 function UserProfile() {
-    const defaultAvatar = useAppSelector((state) => state.user.value.avatar);
-    const token = useAppSelector((state) => state.user.value.token);
-    console.log("tokenUserInfo", token)
-
-    let user = useAppSelector((state) => state.user.value)
-
-    let pseudo = user.pseudo
-    console.log("userProfile user", user)
-
-    // useEffect(() => {
-    //     try {
-    //         if (token) {
-    //             user = useAppSelector((state) => state.user.value)
-    //             console.log("userInfo", user)
-    //             pseudo = user.pseudo             
-    //         }
-
-    //     }
-    //     catch (err) {
-    //         console.log(err)
-    //     }
-
-    // }, [])
-
-    const avatar = <div className="h-20 w-20 flex justify-center items-center rounded-full border-2 border-white bg-yellow-500">
-        <span style={{ fontFamily: 'CaptureIt', fontSize: '40px' }}>{defaultAvatar}</span>
-    </div>
 
     return (
-        <div className="h-full w-full flex ">
-            {token && (
-                <div className="w-full bg-blue-500 ">
-                    <div className="m-2">
-                        {avatar}
-                        {pseudo}
-
-                    </div>
+        <div className="h-full w-full flex flex-col mt-10 ">
+            <UserInfo/>
+            <div className="w-full bg-gray-200 rounded-xl flex justify-evenly items-center mb-2">
+                <span className="my-2">Notifications</span>
+                <span className="my-2">Messages</span>
+                <span className="my-2">contactes</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-xl flex justify-center items-center mb-2">
+                <div>
+                    <span>Articles publiés</span>
                     <div>
-
+                        listes des articles
                     </div>
                 </div>
-            )}
-            <div className="w-full bg-red-500">
-
+                <div>
+                    <span>Favorits</span>
+                    <div>
+                        listes des favorits
+                    </div>
+                </div>
             </div>
-
 
         </div>
     )
