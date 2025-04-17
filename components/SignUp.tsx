@@ -1,4 +1,6 @@
+import { error } from 'node:console'
 import { useState, useEffect } from 'react'
+import ModalSuccessError from './ModalSuccessError'
 
 interface Props {
     setIsModalOpen : (value : boolean) => void
@@ -11,7 +13,9 @@ function SignUp({ setIsModalOpen, setIsSignUp } : Props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [successMessage, setSuccessMessage] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+    const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
     const [bg, setBg] = useState('bg-none')
     const [defaultAvatar, setDefaultAvatar] = useState('')
 
@@ -65,10 +69,11 @@ function SignUp({ setIsModalOpen, setIsSignUp } : Props) {
                     setEmail("");
                     setPassword("");
                     setConfirmPassword("");
-                    setIsModalOpen(false);
+                    setIsMessageModalOpen(true);
+                    setSuccessMessage("Votre compte a bien été créé.");
+
                 } else {
                     setErrorMessage("Une erreur est survenue. Veuillez réessayer.");
-
                 }
             })
     }
@@ -143,6 +148,17 @@ function SignUp({ setIsModalOpen, setIsSignUp } : Props) {
                 <span className="mt-4 mb-6 px-3 py-2 bg-black text-base text-white rounded rounded-full hover:bg-yellow-400 hover:text-black hover:font-bold"
                     onClick={handleRegister}>Confirmer</span>
             </div>
+            {isMessageModalOpen && 
+              <ModalSuccessError successMessage={successMessage} 
+                                 setSuccessMessage={setSuccessMessage}
+                                 error={errorMessage}
+                                 setError={setErrorMessage}
+                                 setIsMessageModalOpen={setIsMessageModalOpen}
+                                 setIsModalOpen={setIsModalOpen}
+               />              
+                                }
+             
+            
         </div>
     )
 }

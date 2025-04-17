@@ -9,7 +9,7 @@ interface Props {
   setCurrentMainComponent: (value: string) => void
 }
 
-function MenuModal({ setIsModalOpen, setCurrentMainComponent } : Props) {
+function ModalMenu({ setIsModalOpen, setCurrentMainComponent } : Props) {
 
   const pseudo = useAppSelector((state) => state.user.value.pseudo)
   const dispatch = useDispatch()
@@ -59,4 +59,4 @@ function MenuModal({ setIsModalOpen, setCurrentMainComponent } : Props) {
   )
 }
 
-export default MenuModal
+export default ModalMenu

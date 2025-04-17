@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useDispatch } from "react-redux";
 import Link from 'next/link'
 
+import ModalSuccessError from './ModalSuccessError'
 import { login } from "../store/reducers/user";
 import { save } from '../store/reducers/auth';
 
@@ -11,7 +12,9 @@ interface Props {
 function SignIn({ setIsModalOpen }: Props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
   const dispatch = useDispatch();
 
   function handleClose() {
@@ -30,15 +33,14 @@ function SignIn({ setIsModalOpen }: Props) {
           password: password,
         }),
       });
-  
+
       // Vérifie si la réponse est correcte et la convertit en JSON
       const data = await response.json();
-  
+
       if (data.result) {
-         // Le token est récupéré ici et peut être stocké dans le localStorage ou dans un context
-        alert("Connexion réussie !");
         console.log("user :", data, "avatar :", data.avatar);
-  
+        setIsMessageModalOpen(true);
+        setSuccessMessage("Connexion réussie !");
         dispatch(
           login({
             email: email,
@@ -51,11 +53,9 @@ function SignIn({ setIsModalOpen }: Props) {
         console.log("SignIn :", data)
         dispatch(save(data.accessToken))
 
-        handleClose();
         setEmail("");
         setPassword("");
         setErrorMessage("");
-        setIsModalOpen(false);
       } else {
         setErrorMessage("Email ou Mot de passe incorrect");
       }
@@ -64,7 +64,6 @@ function SignIn({ setIsModalOpen }: Props) {
       setErrorMessage("Une erreur s'est produite lors de la connexion");
     }
   }
-  
 
   return (
     <div className="h-fit flex flex-col justify-center items-center">
@@ -97,7 +96,7 @@ function SignIn({ setIsModalOpen }: Props) {
             onChange={(e) => setPassword(e.target.value)} />
         </div>
 
-
+        {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
         <span className="px-3 py-2 mt-4 bg-black text-base text-white rounded rounded-full hover:bg-yellow-400 hover:text-black hover:font-bold"
           onClick={handleConnection}
         >Connexion
@@ -106,6 +105,15 @@ function SignIn({ setIsModalOpen }: Props) {
           <Link href="/forgotPassword" ><span className='text-sm text-blue-500 font-bold italic'>Mot de passe oublié?</span></Link>
         </div>
       </div>
+      {isMessageModalOpen && 
+              <ModalSuccessError successMessage={successMessage} 
+                                 setSuccessMessage={setSuccessMessage}
+                                 error={errorMessage}
+                                 setError={setErrorMessage}
+                                 setIsMessageModalOpen={setIsMessageModalOpen}
+                                 setIsModalOpen={setIsModalOpen}
+               />              
+                                }
     </div>
   )
 }

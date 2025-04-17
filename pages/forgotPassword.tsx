@@ -1,9 +1,15 @@
 import React from 'react';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const forgotPassword = () => {
   const [email, setEmail] = useState<string>('')
   const [message, setMessage] = useState<string>('')
+  const router = useRouter();
+
+  function returnHome() {
+    router.push('/');
+  }
 
   const handleSubmit = async () => {
     try {
@@ -28,22 +34,26 @@ const forgotPassword = () => {
 
   }
 
-
   return (
     <div className='h-screen w-screen'>
       <div className="h-screen w-screen flex flex-col items-center justify-center">
-        <h1 className='mb-2 mt-2'>Forgot Password</h1>
-        <p className='mb-2 mt-2 text-xs'>Please enter your email to reset your password.</p>
+        <h1 className=' mt-2'>Mot de Passe Oublié</h1>
         <input
+          className= "h-10 w-56 mt-2"
           type="email"
           placeholder="Entrez votre email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-        /> 
-        <button className="h-8 w-28 mt-4 mb-6 rounded rounded-full hover:bg-gray-300 hover:text-black text-sm"
-          onClick={handleSubmit}>
-          Envoyer
-        </button>
+        />
+        <div className='w-56 flex justify-between mt-1'>
+          <button className='h-9 w-20 rounded rounded-md hover:bg-yellow-400 hover:text-white text-sm'
+            onClick={returnHome}>Retour</button>
+          <button className="h-9 w-32 rounded rounded-md hover:bg-yellow-400 hover:text-white text-sm"
+            onClick={handleSubmit}>
+            Envoyer
+          </button>
+        </div>
+
       </div>
 
     </div>

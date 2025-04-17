@@ -12,7 +12,7 @@ const ResetPasswordPage = () => {
 // console.log(router.query.token)
 console.log(successMessage)
 
-  function handleResetPassword(e) {
+  function handleResetPassword(e: React.MouseEvent<HTMLButtonElement>) {
 
     console.log("click")
     e.preventDefault(); // Empêche la soumission du formulaire par défaut
@@ -36,7 +36,7 @@ console.log(successMessage)
       return;
     }
 
-    fetch(`http://localhost:3000/users/resetPassword/${resetPasswordToken}`, {
+    fetch(`http://localhost:3000/auths/resetPassword/${resetPasswordToken}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -65,8 +65,8 @@ console.log(successMessage)
     <div className='h-screen w-screen flex flex-col items-center'>
       <h1 className='m-8'>Reset Password</h1>
       <div className='flex flex-col justify-center items-center '>
-        <input type="password" placeholder="New Password" onChange={(e) => setNewPassword(e.target.value)} />
-        <input type="password" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e.target.value)} />
+        <input type="password" placeholder="Nouveau Mot de passe" onChange={(e) => setNewPassword(e.target.value)} />
+        <input type="password" placeholder="Confirmation" onChange={(e) => setConfirmPassword(e.target.value)} />
       </div>
       <div className='m-4 flex flex-col justify-center items-center'>
       <button className='h-8 w-24 rounded-md'
@@ -79,9 +79,8 @@ console.log(successMessage)
       
       <div>
         <button className='h-8 w-16 rounded-md'
-                onClick={returnHome}>Return</button>
+                onClick={returnHome}>Retour</button>
       </div>
-      {resetPasswordToken}
 
     </div>
   );

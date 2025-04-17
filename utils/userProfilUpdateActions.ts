@@ -4,15 +4,18 @@ interface handleSaveUpdateProps {
     group: string,
     email: string,
     password: string,
+    setPassword: (value: string) => void
     setError: (value: string) => void,
-    setIsModalOpen: (value: boolean) => void
+    setSuccessMessage: (value: string) => void
+    setIsMessageModalOpen: (value: boolean) => void
     setModalType: (value: string) => void
 }
 
-export async function handleSaveUpdate({ token, pseudo, group, email, password, setError, setIsModalOpen, setModalType }: handleSaveUpdateProps) {
+export async function handleSaveUpdate({ token, pseudo, group, email, password, setPassword, setError, setSuccessMessage, setIsMessageModalOpen, setModalType }: handleSaveUpdateProps) {
     console.log("click")
     console.log("handleSaveUpdate", "token :", token, "pseudo :", pseudo, "group :", group, "email :", email, "password :", password)
     try {
+        console.log("profilUpdate AccessToken", token)
         let sendPassword
         if (!password) {
             sendPassword = "";
@@ -37,82 +40,85 @@ export async function handleSaveUpdate({ token, pseudo, group, email, password, 
         if (!data.result) {
             setError(data.message);
             setModalType("updateOrError");
-            setIsModalOpen(true);
+            setIsMessageModalOpen(true);
             return;
         } else {
             console.log("data.result", data)
-
-            setError(data.message);
+            setPassword("");
+            setSuccessMessage(data.message);
             setModalType("updateOrError");
-            setIsModalOpen(true);
+            setIsMessageModalOpen(true);
         }
 
     } catch (error) {
         setError("An error occurred. Please try again.");
         setModalType("updateOrError");
-        setIsModalOpen(true);
+        setIsMessageModalOpen(true);
     }
 
 }
 
-
-interface AuthProps {
+interface passwordAuth {
     token: string,
     oldPassword: string,
     setOldPassword: (value: string) => void
     setError: (value: string) => void,
     setModalType: (value: string) => void
+    setIsMPChangeModalOpen: (value: boolean) => void
+    authFor: string
     setAuthFor: (value: string) => void
 }
-export async function passwordAuth({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor }: AuthProps) {
+export async function passwordAuth({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor, authFor, setIsMPChangeModalOpen }: passwordAuth) {
     console.log("click")
     try {
-        const response = await fetch('http://localhost:3000/auths/passwordCheck', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                token: token,
-                password: oldPassword,
-            }),
-        })
-        const isPasswordTrue = await response.json();
-
-        if (isPasswordTrue.result) {
-            setModalType("password");
-            setAuthFor("")
-            setOldPassword("");
-        } else {
-            setError("Wrong password");
+        if(authFor === "password"){
+            const response = await fetch('http://localhost:3000/auths/passwordCheck', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    token: token,
+                    password: oldPassword,
+                }),
+            })
+            const isPasswordTrue = await response.json();
+    
+            if (isPasswordTrue.result) {
+                setIsMPChangeModalOpen(true)
+                setModalType("password");
+                setAuthFor("")
+                setOldPassword("");
+                setError("")
+            } else {
+                setError("Wrong password");
+            }
         }
-    } catch (error) {
-        setError("An error occurred. Please try again.");
-    }
-}
 
-export async function emailAuth({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor }: AuthProps) {
-    console.log("click")
-    try {
-        const response = await fetch('http://localhost:3000/auths/passwordCheck', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                token: token,
-                password: oldPassword,
-            }),
-        })
-        const isPasswordTrue = await response.json();
-
-        if (isPasswordTrue.result) {
-            setModalType("email");
-            setAuthFor("")
-            setOldPassword("");
-        } else {
-            setError("Wrong password");
+        if(authFor === "email"){
+            const response = await fetch('http://localhost:3000/auths/passwordCheck', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    token: token,
+                    password: oldPassword,
+                }),
+            })
+            const isPasswordTrue = await response.json();
+    
+            if (isPasswordTrue.result) {
+                setIsMPChangeModalOpen(true)
+                setModalType("email");
+                setAuthFor("")
+                setOldPassword("");
+                setError("")
+            } else {
+                setError("Wrong password");
+            }
         }
+       
     } catch (error) {
         setError("An error occurred. Please try again.");
     }

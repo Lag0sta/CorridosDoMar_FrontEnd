@@ -5,7 +5,7 @@ import Header from './Header';
 import Research from './Research';
 import SignIn from './SignIn'
 import SignUp from './SignUp'
-import MenuModal from './MenuModal';
+import ModalMenu from './ModalMenu';
 import Submit from './Submit';
 import ShowElement from './ShowElement';
 import UserProfile from './UserProfile';
@@ -72,11 +72,10 @@ function Home() {
               {isSignIn && <SignIn setIsModalOpen={(value: boolean) => setIsModalOpen(value)} />}
               {isSignUp && <SignUp setIsModalOpen={(value: boolean) => setIsModalOpen(value)}
                 setIsSignUp={(value: boolean) => setIsSignUp(value)} />}
-              {isMenu && <MenuModal setIsModalOpen={(value: boolean) => setIsModalOpen(value)}
+              {isMenu && <ModalMenu setIsModalOpen={(value: boolean) => setIsModalOpen(value)}
                 setCurrentMainComponent={(value: string) => setCurrentMainComponent(value)}
               />}
             </div>
-
           </div>
         }
       </main>
