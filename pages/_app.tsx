@@ -11,16 +11,16 @@ function App({ Component, pageProps }: AppProps) {
   //rafraîchissement de l'accessToken
   const refreshAccessToken = async (): Promise<void> => {
     try {
-      const response = await fetch("http://localhost:3000/auth/refresh", {
+      const response = await fetch("http://localhost:3000/auths/refresh-token", {
         method: "POST",
         credentials: "include", // envoie automatiquement le refreshToken du cookie httpOnly
       });
 
       const data = await response.json();
 
-      if (data.token) {
+      if (data.accessToken) {
         // On met à jour l'accessToken dans le store Redux
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.accessToken);
       } else {
         console.log("Impossible de rafraîchir le token");
       }

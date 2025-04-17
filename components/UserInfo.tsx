@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../store/hooks";
-import { handleSaveUdpate } from "../utils/userProfilUpdateActions";
+import { handleSaveUpdate } from "../utils/userProfilUpdateActions";
 import UserInfoModal from "./UserInfoModal";
 interface User {
     avatar: string;
@@ -14,12 +14,16 @@ function UserInfo() {
     const [pseudo, setPseudo] = useState<string>('');
     const [group, setGroup] = useState<string>('');
     const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('*******');
+    const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>('');
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [authFor, setAuthFor] = useState<string>("");
+    const [modalType, setModalType] = useState<string>("");
 
 
+    useEffect(() => {
+        console.log("UserInfo password", password);
+      }, []);
     const token = useAppSelector((state) => state.authToken.value);
 
     function HandlePasswordChange() {
@@ -113,15 +117,11 @@ function UserInfo() {
                             </div>
                             
                         </div>
-                        <div className="w-full flex justify-between my-1 ">
+                        <div className="w-full flex my-1 ">
                             <span style={{ fontFamily: 'CaptureIt', fontSize: '20px' }}>
                                 Mot De Passe :
                             </span>
-                            <div className="flex flex-col items-end">
-                                <input className="border-none my-1 bg-yellow-200"
-                                       type="password" 
-                                       disabled 
-                                       value={password} />
+                            <div className="flex justify-center ml-2">
                                 <span className="w-fit my-1 text-center bg-black rounded-lg px-2 py-1 text-white hover:bg-yellow-400 hover:text-white"
                                     onClick={() => HandlePasswordChange()}
                                 >modifier</span>
@@ -131,13 +131,15 @@ function UserInfo() {
 
                         <div className="flex justify-center my-4">
                             <span className="bg-black rounded-lg px-2 py-1 text-white hover:bg-yellow-400 hover:text-white"
-                                onClick={() => handleSaveUdpate({
+                                onClick={() => handleSaveUpdate({
                                     token,
                                     pseudo,
                                     group,
                                     email,
                                     password,
-                                    setError
+                                    setError,
+                                    setIsModalOpen,
+                                    setModalType
                                 },
                                 )}>Sauvegarder</span>
                         </div>
@@ -151,6 +153,10 @@ function UserInfo() {
                     setEmail={(value: string) => setEmail(value)}
                     setAuthFor={(value: string) => setAuthFor(value)}
                     authFor={authFor}
+                    error={error}
+                    setError={(value: string) => setError(value)}
+                    setModalType={(value: string) => setModalType(value)}
+                    modalType={modalType}
                 />}
         </div>
     )

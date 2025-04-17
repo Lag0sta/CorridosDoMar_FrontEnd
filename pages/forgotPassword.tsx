@@ -4,9 +4,11 @@ import { useState } from 'react';
 const forgotPassword = () => {
   const [email, setEmail] = useState<string>('')
   const [message, setMessage] = useState<string>('')
+
   const handleSubmit = async () => {
+    console.log("click")
     try {
-      const response = await fetch('http://localhost:3000/users/forgotPassword', {
+      const response = await fetch('http://localhost:3000/auths/forgotPassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

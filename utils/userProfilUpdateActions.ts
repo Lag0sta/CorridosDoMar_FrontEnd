@@ -4,35 +4,53 @@ interface handleSaveUpdateProps {
     group: string,
     email: string,
     password: string,
-    setError: (value: string) => void
+    setError: (value: string) => void,
+    setIsModalOpen: (value: boolean) => void
+    setModalType: (value: string) => void
 }
 
-export async function handleSaveUdpate({ token, pseudo, group, email, password, setError }: handleSaveUpdateProps) {
+export async function handleSaveUpdate({ token, pseudo, group, email, password, setError, setIsModalOpen, setModalType }: handleSaveUpdateProps) {
     console.log("click")
-
+console.log("handleSaveUpdate", "token :", token, "pseudo :", pseudo, "group :", group, "email :", email, "password :", password)
     try {
+        let sendPassword
+        if(!password){ 
+            sendPassword = "";
+        }else{
+            sendPassword = password
+        }
         const response = await fetch('http://localhost:3000/users/update', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify({
-                token: token,
+                accessToken: token,
                 pseudo: pseudo,
                 group: group,
                 email: email,
-                password: password,
+                password: sendPassword,
             }),
         })
-        const user = await response.json();
-    if (!user || !user.userId) {
-      setError("Token invalide ou expiré.");
+        const data = await response.json();
+    if (!data.result) {
+      setError(data.message);
+      setModalType("updateOrError");
+      setIsModalOpen(true);
       return;
+    } else {
+        console.log("data.result", data)
+
+        setError(data.message);
+        setModalType("updateOrError");
+        setIsModalOpen(true);
     }
 
     } catch (error) {
         setError("An error occurred. Please try again.");
-
+        setModalType("updateOrError");
+        setIsModalOpen(true);
     }
 
 }
@@ -43,10 +61,10 @@ interface AuthProps {
     oldPassword: string,
     setOldPassword: (value: string) => void
     setError: (value: string) => void,
-    setIsEmailOrPswd: (value: string) => void
+    setModalType: (value: string) => void
     setAuthFor: (value: string) => void
 }
-export async function passwordAuth ({ token, oldPassword, setOldPassword, setError, setIsEmailOrPswd, setAuthFor }: AuthProps){
+export async function passwordAuth ({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor }: AuthProps){
     console.log("click")
     try {
         const response = await fetch('http://localhost:3000/auths/passwordCheck', {
@@ -62,7 +80,7 @@ export async function passwordAuth ({ token, oldPassword, setOldPassword, setErr
         const isPasswordTrue = await response.json();
 
         if(isPasswordTrue.result){
-            setIsEmailOrPswd("password");
+            setModalType("password");
             setAuthFor("")
             setOldPassword("");
         }else{
@@ -73,7 +91,7 @@ export async function passwordAuth ({ token, oldPassword, setOldPassword, setErr
     }
 }
 
-export async function emailAuth ({ token, oldPassword, setOldPassword, setError, setIsEmailOrPswd, setAuthFor }: AuthProps){
+export async function emailAuth ({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor }: AuthProps){
     console.log("click")
     try {
         const response = await fetch('http://localhost:3000/auths/passwordCheck', {
@@ -89,7 +107,7 @@ export async function emailAuth ({ token, oldPassword, setOldPassword, setError,
         const isPasswordTrue = await response.json();
 
         if(isPasswordTrue.result){
-            setIsEmailOrPswd("email");
+            setModalType("email");
             setAuthFor("")
             setOldPassword("");
         }else{

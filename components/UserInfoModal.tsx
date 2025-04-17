@@ -7,16 +7,18 @@ interface Props {
   setEmail: (value: string) => void
   setAuthFor: (value: string) => void
   authFor: string
+  error: string
+  setError: (value: string) => void
+  modalType: string
+  setModalType: (value: string) => void
 }
 
-function UserInfoModal({ setIsModalOpen, setPassword, setEmail, setAuthFor, authFor }: Props) {
+function UserInfoModal({ setIsModalOpen, setPassword, setEmail, setAuthFor, authFor, error, setError, modalType, setModalType }: Props) {
   const [newPassword, setNewPassword] = useState<string>('');
   const [newEmail, setNewEmail] = useState<string>('');
   const [oldPassword, setOldPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [confirmEmail, setConfirmEmail] = useState<string>('');
-  const [error, setError] = useState<string>('');
-  const [isEmailOrPswd, setIsEmailOrPswd] = useState<string>("");
   const [bG, setBg] = useState<string>("");
   const token = useAppSelector((state) => state.authToken.value);
 
@@ -34,8 +36,9 @@ function UserInfoModal({ setIsModalOpen, setPassword, setEmail, setAuthFor, auth
   function handleClose() {
     console.log("click")
     setIsModalOpen(false)
-    setIsEmailOrPswd("")
+    setModalType("")
     setAuthFor("")
+    setError("")
   }
 
   function handlePasswordChange() {
@@ -43,7 +46,7 @@ function UserInfoModal({ setIsModalOpen, setPassword, setEmail, setAuthFor, auth
     if (newPassword === confirmPassword) {
       setPassword(newPassword)
       setIsModalOpen(false)
-      setIsEmailOrPswd("")
+      setModalType("")
     } else {
       setError("Passwords do not match")
     }
@@ -55,7 +58,7 @@ function UserInfoModal({ setIsModalOpen, setPassword, setEmail, setAuthFor, auth
     if (newEmail === confirmEmail) {
       setEmail(newEmail)
       setIsModalOpen(false)
-      setIsEmailOrPswd("")
+      setModalType("")
     } else {
       setError("Emails do not match")
     }
@@ -66,7 +69,7 @@ function UserInfoModal({ setIsModalOpen, setPassword, setEmail, setAuthFor, auth
     <div className="h-screen w-screen  fixed inset-0 flex items-center justify-center z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-black bg-opacity-10 transition-opacity backdrop-filter backdrop-blur-sm" ></div>
       <div className=" z-50 w-[85%]  h-fit flex flex-col justify-center items-center bg-white rounded rounded-xl">
-        <div className='w-full flex flex-reverse justify-end '>
+        {!error && <div className='w-full flex flex-reverse justify-end '>
           <svg className="size-10 fill-gray-800 stroke-white m-2 hover:fill-white hover:stroke-gray-800 hover:size-12 hover:m-1"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -76,10 +79,10 @@ function UserInfoModal({ setIsModalOpen, setPassword, setEmail, setAuthFor, auth
             onClick={handleClose}>
             <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
           </svg>
-        </div>
+        </div>}
 
         <div className='w-full h-[90%] flex flex-col justify-evenly items-center '>
-          {isEmailOrPswd === "email" &&
+          {modalType === "email" &&
             <div className="w-full flex flex-col justify-center">
               <h3 className="mb-4 text-4xl text-center">e-mail</h3>
               <div className='mx-3 mb-1   flex flex-col justify-center '>
@@ -101,7 +104,7 @@ function UserInfoModal({ setIsModalOpen, setPassword, setEmail, setAuthFor, auth
 
             </div>
           }
-          {isEmailOrPswd === "password" &&
+          {modalType === "password" &&
             <div className="w-full flex flex-col justify-center">
               <h3 className="mb-4 text-4xl text-center">mot de passe</h3>
               <div className='mx-3 mb-1 flex flex-col justify-center '>
@@ -132,7 +135,7 @@ function UserInfoModal({ setIsModalOpen, setPassword, setEmail, setAuthFor, auth
               </div>
               <div className="flex justify-center items-center pb-5">
                 <span className="px-6 py-2 mt-4 bg-black text-base text-white rounded rounded-full hover:bg-yellow-400 hover:text-black hover:font-bold"
-                  onClick={() => passwordAuth({ token, oldPassword, setOldPassword, setError, setIsEmailOrPswd, setAuthFor })}
+                  onClick={() => passwordAuth({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor })}
                 >
                   Envoyer
                 </span>
@@ -148,14 +151,23 @@ function UserInfoModal({ setIsModalOpen, setPassword, setEmail, setAuthFor, auth
               </div>
               <div className="flex justify-center items-center pb-5">
                 <span className="px-6 py-2 mt-4 bg-black text-base text-white rounded rounded-full hover:bg-yellow-400 hover:text-black hover:font-bold"
-                  onClick={() => emailAuth({ token, oldPassword, setOldPassword, setError, setIsEmailOrPswd, setAuthFor })}>
+                  onClick={() => emailAuth({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor })}>
                   Save
                 </span>
               </div>
             </div>
           }
         </div>
-        {error && <div className="text-red-500">{error}</div>}
+        {modalType === "updateOrError" && 
+          <div>
+            <div className="text-red-500 mt-6">
+              {error}
+            </div>
+            <div className="flex justify-center items-center mb-6">
+              <span className="px-6 py-2 mt-4 bg-black text-base text-white rounded rounded-xl hover:bg-yellow-400 hover:text-black hover:font-bold"
+                    onClick={handleClose}>OK</span>
+            </div>
+          </div>}
       </div>
     </div>
   )
