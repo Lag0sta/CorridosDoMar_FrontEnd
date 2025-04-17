@@ -6,7 +6,6 @@ const forgotPassword = () => {
   const [message, setMessage] = useState<string>('')
 
   const handleSubmit = async () => {
-    console.log("click")
     try {
       const response = await fetch('http://localhost:3000/auths/forgotPassword', {
         method: 'POST',
@@ -41,8 +40,10 @@ const forgotPassword = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         /> 
-               <button className="h-8 w-28 mt-4 mb-6 rounded rounded-full hover:bg-gray-300 hover:text-black text-sm"
-          onClick={handleSubmit}>Envoyer</button>
+        <button className="h-8 w-28 mt-4 mb-6 rounded rounded-full hover:bg-gray-300 hover:text-black text-sm"
+          onClick={handleSubmit}>
+          Envoyer
+        </button>
       </div>
 
     </div>

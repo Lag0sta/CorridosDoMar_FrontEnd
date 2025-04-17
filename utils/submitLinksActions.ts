@@ -31,9 +31,9 @@ export const handleSubmitImgLink = ({ imgLink, setImgLink, setImgLinkError, link
             return;
         }
     }
+
     dispatch(add({ link: imgLink, type: "img" }));    
     setImgLink("");
-
 }
 
 interface handleSubmitMediaLinkProps {

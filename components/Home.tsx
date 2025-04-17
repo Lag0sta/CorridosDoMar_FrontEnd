@@ -28,27 +28,6 @@ function Home() {
   const tokenInStore = useAppSelector((state) => state.authToken.value);
   const [tokenInLocalStorage, setTokenInLocalStorage] = useState<string | null>(null);
 
-  useEffect(() => {
-    const checkToken = () => {
-      const token = localStorage.getItem("token");
-      if (token && token !== tokenInStore) {
-        console.log("HomeToken", token)
-        console.log("yolo")
-        // Met à jour le store avec le nouveau token
-        dispatch(save(token)); // Action Redux pour sauvegarder le token
-        localStorage.removeItem("token"); // Supprime le token de localStorage
-      }
-    };
-
-    // Appeler checkToken immédiatement et ensuite toutes les 500ms
-    checkToken(); // Vérifier immédiatement au cas où
-    const intervalId = setInterval(checkToken, 500); // Vérification toutes les 500ms
-
-    // Nettoyer l'intervalle lorsque le composant est démonté
-    return () => clearInterval(intervalId);
-  }, [tokenInLocalStorage, tokenInStore, dispatch]);
-
-
   console.log("answer", currentMainComponent)
 
   return (

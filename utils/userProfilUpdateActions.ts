@@ -11,12 +11,12 @@ interface handleSaveUpdateProps {
 
 export async function handleSaveUpdate({ token, pseudo, group, email, password, setError, setIsModalOpen, setModalType }: handleSaveUpdateProps) {
     console.log("click")
-console.log("handleSaveUpdate", "token :", token, "pseudo :", pseudo, "group :", group, "email :", email, "password :", password)
+    console.log("handleSaveUpdate", "token :", token, "pseudo :", pseudo, "group :", group, "email :", email, "password :", password)
     try {
         let sendPassword
-        if(!password){ 
+        if (!password) {
             sendPassword = "";
-        }else{
+        } else {
             sendPassword = password
         }
         const response = await fetch('http://localhost:3000/users/update', {
@@ -34,18 +34,18 @@ console.log("handleSaveUpdate", "token :", token, "pseudo :", pseudo, "group :",
             }),
         })
         const data = await response.json();
-    if (!data.result) {
-      setError(data.message);
-      setModalType("updateOrError");
-      setIsModalOpen(true);
-      return;
-    } else {
-        console.log("data.result", data)
+        if (!data.result) {
+            setError(data.message);
+            setModalType("updateOrError");
+            setIsModalOpen(true);
+            return;
+        } else {
+            console.log("data.result", data)
 
-        setError(data.message);
-        setModalType("updateOrError");
-        setIsModalOpen(true);
-    }
+            setError(data.message);
+            setModalType("updateOrError");
+            setIsModalOpen(true);
+        }
 
     } catch (error) {
         setError("An error occurred. Please try again.");
@@ -64,7 +64,7 @@ interface AuthProps {
     setModalType: (value: string) => void
     setAuthFor: (value: string) => void
 }
-export async function passwordAuth ({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor }: AuthProps){
+export async function passwordAuth({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor }: AuthProps) {
     console.log("click")
     try {
         const response = await fetch('http://localhost:3000/auths/passwordCheck', {
@@ -79,19 +79,19 @@ export async function passwordAuth ({ token, oldPassword, setOldPassword, setErr
         })
         const isPasswordTrue = await response.json();
 
-        if(isPasswordTrue.result){
+        if (isPasswordTrue.result) {
             setModalType("password");
             setAuthFor("")
             setOldPassword("");
-        }else{
+        } else {
             setError("Wrong password");
         }
-    }catch (error) {
+    } catch (error) {
         setError("An error occurred. Please try again.");
     }
 }
 
-export async function emailAuth ({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor }: AuthProps){
+export async function emailAuth({ token, oldPassword, setOldPassword, setError, setModalType, setAuthFor }: AuthProps) {
     console.log("click")
     try {
         const response = await fetch('http://localhost:3000/auths/passwordCheck', {
@@ -106,14 +106,14 @@ export async function emailAuth ({ token, oldPassword, setOldPassword, setError,
         })
         const isPasswordTrue = await response.json();
 
-        if(isPasswordTrue.result){
+        if (isPasswordTrue.result) {
             setModalType("email");
             setAuthFor("")
             setOldPassword("");
-        }else{
+        } else {
             setError("Wrong password");
         }
-    }catch (error) {
+    } catch (error) {
         setError("An error occurred. Please try again.");
     }
 }

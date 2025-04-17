@@ -29,8 +29,6 @@ function SignIn({ setIsModalOpen }: Props) {
           email: email,
           password: password,
         }),
-        credentials: "include", // Important : permet d'envoyer le cookie httpOnly (refreshToken)
-
       });
   
       // Vérifie si la réponse est correcte et la convertit en JSON
@@ -38,7 +36,6 @@ function SignIn({ setIsModalOpen }: Props) {
   
       if (data.result) {
          // Le token est récupéré ici et peut être stocké dans le localStorage ou dans un context
-        localStorage.setItem("token", data.accessToken);
         alert("Connexion réussie !");
         console.log("user :", data, "avatar :", data.avatar);
   
@@ -51,6 +48,7 @@ function SignIn({ setIsModalOpen }: Props) {
             favorites: data.favorites,
           })
         );
+        console.log("SignIn :", data)
         dispatch(save(data.accessToken))
 
         handleClose();
