@@ -50,7 +50,6 @@ function SignIn({ setIsModalOpen }: Props) {
             favorites: data.favorites,
           })
         );
-        console.log("SignIn :", data)
         dispatch(save(data.accessToken))
 
         setEmail("");

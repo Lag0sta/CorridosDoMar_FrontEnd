@@ -27,7 +27,7 @@ function UserInfo() {
     const [successMessage, setSuccessMessage] = useState<string>("");
 
 
-    const truncatedEmail = email.substring(0, 5) + "..." + email.substring(email.length - 8);
+    const truncatedEmail = email.substring(0, 5) + "..." + email.substring(email.length - 10);
 
     useEffect(() => {
         console.log("UserInfo password", password);
@@ -61,7 +61,6 @@ function UserInfo() {
                         setPseudo(data.pseudo);
                         setGroup(data.group);
                         setEmail(data.email);
-                        setPassword(data.password);
                     } else {
                         console.error('Erreur de récupération des données');
                     }
@@ -110,7 +109,7 @@ function UserInfo() {
                         <div className="flex justify-between my-1">
                             <span style={{ fontFamily: 'CaptureIt', fontSize: '20px' }}>Email :</span>
                             <div className="w-fit flex flex-raw justify-between items-center">
-                                <input className="w-36 mr-4 border-none bg-yellow-200"
+                                <input className="px-1 w-36 h-7 mr-4 border-none bg-white"
                                     type="text"
                                     value={truncatedEmail}
                                     style={{

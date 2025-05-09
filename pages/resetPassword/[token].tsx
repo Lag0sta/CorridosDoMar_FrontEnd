@@ -36,7 +36,7 @@ console.log(successMessage)
       return;
     }
 
-    fetch(`http://localhost:3000/auths/resetPassword/${resetPasswordToken}`, {
+    fetch(`http://localhost:3000/users/resetPassword/${resetPasswordToken}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

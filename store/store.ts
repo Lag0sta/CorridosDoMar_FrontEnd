@@ -5,10 +5,12 @@ import search from './reducers/search';
 import submitLinks from './reducers/submitLinks';
 import submitMainText from './reducers/submitMainText';
 import authToken from './reducers/auth';
+import mySubmits from './reducers/mySubmits';
+import editSubmit from './reducers/editSubmit';
 
 // Typage du store
 export const store = configureStore({
-  reducer: { authToken, user, search, submitLinks, submitMainText },
+  reducer: { authToken, user, search, submitLinks, submitMainText, mySubmits, editSubmit },
 });
 
 // Définition du type RootState
