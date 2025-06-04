@@ -23,9 +23,9 @@ const SubmitRythm = ({ type, setCurrentMainComponent }: Props) => {
     const [selectedSubType, setSelectedSubType] = useState<string>("");
 
     const dispatch = useDispatch();
-    const linksData = useAppSelector((state) => state.submitLinks.value);
+    const linksData = useAppSelector((state) => state.handleLinks.value);
     const userToken = useAppSelector((state) => state.user.value.token);
-    const mainText = useAppSelector((state) => state.submitMainText.value);
+    const mainText = useAppSelector((state) => state.handleMainText.value);
 
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

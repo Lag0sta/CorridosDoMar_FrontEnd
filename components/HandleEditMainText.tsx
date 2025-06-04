@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../store/hooks";
 
-import { handleEditText, handleDeleteText } from "../utils/submitMainTextActions";
+import { handleEditText, handleDeleteText } from "../utils/handleMainTextActions";
 
 interface Props {
     type: string;
@@ -17,7 +17,7 @@ const HandleEditMainText = ({ type, selectedType, setSelectedType, editedText, s
 
     console.log("selectedType", selectedType)
     const dispatch = useDispatch();
-    const textToEdit = useAppSelector((state) => state.submitMainText.value)
+    const textToEdit = useAppSelector((state) => state.handleMainText.value)
     console.log("textToEdit", textToEdit)
     console.log("editedTextHandleEditMainText", editedText)
 

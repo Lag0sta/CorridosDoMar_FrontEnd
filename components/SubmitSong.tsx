@@ -22,9 +22,9 @@ const SubmitSong = ({ type, setCurrentMainComponent } : Props) => {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState<boolean>(false);
 
   const dispatch = useDispatch();
-  const linksData = useAppSelector((state) => state.submitLinks.value);
+  const linksData = useAppSelector((state) => state.handleLinks.value);
   const userToken = useAppSelector((state) => state.user.value.token);
-  const mainText = useAppSelector((state) => state.submitMainText.value);
+  const mainText = useAppSelector((state) => state.handleMainText.value);
 
   console.log("linksData", linksData)
   console.log("titleBeforeSubmit", title)

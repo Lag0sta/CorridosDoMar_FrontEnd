@@ -2,9 +2,9 @@ import TextOverflow from "react-text-overflow";
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../store/hooks";
-import { add, remove, } from "../store/reducers/submitLinks";
+import { add, remove, } from "../store/reducers/handleLinks";
 import ModalSubmitMessage from "./ModalSubmitMessage";
-import { handleRemoveLinks, handleSubmitMediaLink } from "../utils/submitLinksActions";
+import { handleRemoveLinks, handleSubmitMediaLink } from "../utils/handleLinksActions";
 import { RootState } from "../store/store";
 
 interface LinkValue {
@@ -21,7 +21,7 @@ const HandleSubmitMediaLinks = () => {
 
 
     const dispatch = useDispatch();
-    const linksData = useAppSelector((state: RootState) => state.submitLinks.value as LinkValue[]);
+    const linksData = useAppSelector((state: RootState) => state.handleLinks.value as LinkValue[]);
 
 
     // enregistre le choix de media

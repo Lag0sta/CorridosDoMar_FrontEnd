@@ -13,10 +13,16 @@ const initialState : SubmitLinksState = {
   value: []
 };
 
-const submitLinksSlice = createSlice({
-  name: "submitLinks",
+const handleLinksSlice = createSlice({
+  name: "handleSubmitLinks",
   initialState,
   reducers: {
+
+    // Initialisation du Reducer
+    initLinks: (state, action) => {
+      state.value = action.payload
+    },
+
     add: (state,  action: PayloadAction<Link>) => {
       state.value = [...state.value, action.payload]
     },
@@ -30,5 +36,5 @@ const submitLinksSlice = createSlice({
   },
 });
 
-export const {add, remove, clear} = submitLinksSlice.actions;
-export default submitLinksSlice.reducer;
+export const {initLinks, add, remove, clear} = handleLinksSlice.actions;
+export default handleLinksSlice.reducer;

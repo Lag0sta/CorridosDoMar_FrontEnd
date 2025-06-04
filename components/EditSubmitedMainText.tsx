@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../store/hooks";
-import { handleEditText, handleDeleteText } from "../utils/submitMainTextActions";
+import { handleEditText, handleDeleteText } from "../utils/handleMainTextActions";
 
 interface Props {
     type: string;

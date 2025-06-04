@@ -24,8 +24,8 @@ const SubmitLexicon = ({ type, setCurrentMainComponent } : Props) => {
 
     const dispatch = useDispatch();
     const userToken = useAppSelector((state) => state.user.value.token);
-    const mainText = useAppSelector((state) => state.submitMainText.value);
-    const linksData = useAppSelector((state) => state.submitLinks.value);
+    const mainText = useAppSelector((state) => state.handleMainText.value);
+    const linksData = useAppSelector((state) => state.handleLinks.value);
 
     return (
         <div className=" h-[100%]">

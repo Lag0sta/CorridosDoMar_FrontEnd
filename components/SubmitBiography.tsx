@@ -27,9 +27,9 @@ const SubmitBiography = ({ type, setCurrentMainComponent } : Props) => {
   const [error, setError] = useState<string>("");
 
   const dispatch = useDispatch();
-  const linksData = useAppSelector((state) => state.submitLinks.value);
+  const linksData = useAppSelector((state) => state.handleLinks.value);
   const userToken = useAppSelector((state) => state.user.value.token);
-  const mainText = useAppSelector((state) => state.submitMainText.value);
+  const mainText = useAppSelector((state) => state.handleMainText.value);
 console.log("mainText SubmitBio", mainText)
 
   return (

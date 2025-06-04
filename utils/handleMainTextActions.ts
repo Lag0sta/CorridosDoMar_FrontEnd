@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { add, incrementIndex, decrementIndex, edit, remove, clear } from "../store/reducers/submitMainText";
+import { addMainText, incrementIndex, decrementIndex, editMainText, remove, clear } from "../store/reducers/handleMainText";
 
 interface handleSubmitTextProps {
     radioChoice : string;
@@ -29,7 +29,7 @@ export const handleSubmitText = ({ radioChoice, setRadioChoice, text, setText, s
     mainText.push(...text.split(/[\r\n]+/))
     console.log("mainText", mainText)
 
-    dispatch(add({text: mainText , type: radioChoice }));    
+    dispatch(addMainText({text: mainText , type: radioChoice }));    
     setText("");
     setRadioChoice("autre");
 }
@@ -74,7 +74,7 @@ export const handleEditText = ({ dispatch ,editedText, setEditedText, selectedTy
 
     mainText.push(...editedText.join("\n").split(/[\r\n]+/).filter(item => item !== ""))
     console.log("text of Edit:", mainText, "type", selectedType)
-    dispatch(edit({text : mainText, type: selectedType}))
+    dispatch(editMainText({text : mainText, type: selectedType}))
     setSelectedType("");
     setEditedText([""]);
 }

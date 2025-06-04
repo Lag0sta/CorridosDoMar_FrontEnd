@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { add, remove, clear } from "../store/reducers/submitLinks";
+import { add, remove, clear } from "../store/reducers/handleLinks";
 import { AppDispatch } from "../store/store";
 
 interface Link {

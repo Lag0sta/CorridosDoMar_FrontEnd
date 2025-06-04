@@ -2,7 +2,9 @@ import { useState, useEffect, use } from "react";
 import { useDispatch } from "react-redux";
 import ReactPlayer from 'react-player';
 import { useAppSelector } from '../store/hooks';
-import { initialise } from "../store/reducers/editSubmit";
+import { initialise } from "../store/reducers/editSubmits";
+import { initMainText } from "../store/reducers/handleMainText";
+import { initLinks } from "../store/reducers/handleLinks";
 import EditElement from "./EditElement";
 
 interface Props {
@@ -40,7 +42,6 @@ const ShowElement = ({ setCurrentMainComponent, selectedTitle }: Props) => {
     const search = useAppSelector((state) => state.search.value);
     const token = useAppSelector((state) => state.authToken.value);
     const dispatch = useDispatch();
-
     console.log("content", content)
     console.log("isUser", isUser)
     console.log("ShowElementSearch", search)
@@ -98,13 +99,14 @@ const ShowElement = ({ setCurrentMainComponent, selectedTitle }: Props) => {
         } 
         
         dispatch(initialise(contentToEdit))
+        dispatch(initMainText(contentToEdit.mainText))
+        dispatch(initLinks(contentToEdit.links))
     }
 
     return (
         <div className="h-screen overflow-auto px-4 py-6">
             {isEditOn && (
                 <EditElement setIsEditOn={(value: boolean) => setIsEditOn(value)}
-                             content={content}
                 />
             )
             }

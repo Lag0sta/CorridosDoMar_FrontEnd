@@ -4,7 +4,7 @@ import { useAppSelector } from '../store/hooks';
 
 
 import HandleEditMainText from "./HandleEditMainText";
-import { handleDecrementIndex, handleIncrementIndex, handleSubmitText } from "../utils/submitMainTextActions";
+import { handleDecrementIndex, handleIncrementIndex, handleSubmitText } from "../utils/handleMainTextActions";
 
 interface Props {
     type: string
@@ -22,10 +22,8 @@ const HandleSubmitMainText = ({ type, }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const dispatch = useDispatch();
-    const textData = useAppSelector((state) => state.submitMainText.value);
-    const textToEdit = useAppSelector((state) => state.submitMainText.value)
+    const textData = useAppSelector((state) => state.handleMainText.value);
     console.log("textData", textData)
-    console.log("textToEdit", textToEdit)
     console.log("editedTextHandleSubmitMainText", editedText)
 
     // enregistre le choix type de texte
@@ -43,25 +41,25 @@ const HandleSubmitMainText = ({ type, }: Props) => {
         console.log("click Edit")
         setIsModalOpen(true);
         console.log("indexToEdit", index)
-        console.log("textToEdit[index]", textToEdit[index])
+        console.log("textData[index]", textData[index])
 
         const textArr: string[] = [];
 
-        for (let i = 0; i < textToEdit.length; i++) {
+        for (let i = 0; i < textData.length; i++) {
             if (index === i) {
-                console.log("setRadioChoice", textToEdit[i].type);
-                setSelectedType(textToEdit[i].type);
+                console.log("setRadioChoice", textData[i].type);
+                setSelectedType(textData[i].type);
                 
-                // Vérifie si textToEdit[i].text est un tableau
-                if (Array.isArray(textToEdit[i].text)) {
-                    for (const text of textToEdit[i].text) {
+                // Vérifie si textData[i].text est un tableau
+                if (Array.isArray(textData[i].text)) {
+                    for (const text of textData[i].text) {
                         textArr.push(text + "\n");
                                 console.log("textARRRRRRRR", textArr)
 
                     }
                 } else {
-                    // Si textToEdit[i].text est une chaîne de caractères, on la traite comme tel
-                    textArr.push(textToEdit[i].text + "\n");
+                    // Si textData[i].text est une chaîne de caractères, on la traite comme tel
+                    textArr.push(textData[i].text + "\n");
                 }
                 setIndexToRemove(index);
             }
