@@ -1,3 +1,6 @@
+import { clearLinks } from "./handleLinksActions";
+import { clearMainText } from "./handleMainTextActions";
+
 interface MainText {
     text: string[];
     type: string;
@@ -13,6 +16,7 @@ interface handleEditContentProps {
     type: string;
     title: string;
     secondaryTitle: string;
+    selectedSubType: string;
     secondaryType: string;
     mainText: MainText[];
     links: Link[];
@@ -20,9 +24,11 @@ interface handleEditContentProps {
     setError: (value: string) => void;
     setIsEditModalOpen: (value: boolean) => void;
     setLoading: (value: boolean) => void;
+    dispatch: any;
+    setSuccessMessage: (value: string) => void;
 }
 
-export async function handleEditContent({token, type, title, secondaryTitle, secondaryType, mainText, links, setIsEditOn, setError, setIsEditModalOpen, setLoading}: handleEditContentProps) {
+export async function handleEditContent({token, type, title, secondaryTitle, secondaryType, mainText, links, setIsEditOn, selectedSubType, setError, setIsEditModalOpen, setLoading, dispatch, setSuccessMessage}: handleEditContentProps) {
   setIsEditModalOpen(true)
   console.log("click");
 
@@ -53,9 +59,9 @@ export async function handleEditContent({token, type, title, secondaryTitle, sec
       return;
     }
     if (type === "song") {
-      console.log("Avant envoi:", linksData);
+      console.log("Avant envoi:", links);
 
-      response2 = await fetch("http://localhost:3000/submits", {
+      response2 = await fetch("http://localhost:3000/submits/update", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -64,7 +70,7 @@ export async function handleEditContent({token, type, title, secondaryTitle, sec
           secondaryTitle: secondaryTitle,
           secondaryType: selectedSubType,
           mainText: mainText,
-          links: linksData,
+          links: links,
         }),
       });
       //modifier les dispatch par ceux du reducer editSubmits
@@ -72,7 +78,7 @@ export async function handleEditContent({token, type, title, secondaryTitle, sec
       clearMainText(dispatch)
 
     } else if (type === "rythm") {
-      response2 = await fetch("http://localhost:3000/submits", {
+      response2 = await fetch("http://localhost:3000/submits/update", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -81,7 +87,7 @@ export async function handleEditContent({token, type, title, secondaryTitle, sec
           secondaryTitle: secondaryTitle,
           secondaryType: selectedSubType,
           mainText: mainText,
-          links: linksData,
+          links: links,
           createdBy: userId.userId,
         }),
       });
@@ -90,7 +96,7 @@ export async function handleEditContent({token, type, title, secondaryTitle, sec
       clearMainText(dispatch)
 
     } else if (type === "biography") {
-      response2 = await fetch("http://localhost:3000/submits", {
+      response2 = await fetch("http://localhost:3000/submits/update", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -98,7 +104,7 @@ export async function handleEditContent({token, type, title, secondaryTitle, sec
           title: title,
           secondaryTitle: secondaryTitle,
           mainText: mainText,
-          links: linksData,
+          links: links,
           createdBy: userId.userId,
         }),
 
@@ -109,7 +115,7 @@ export async function handleEditContent({token, type, title, secondaryTitle, sec
 
     } else if (type === "lexicon") {
       console.log('LEXICON AVANT ENVOI', mainText, type, title)
-      response2 = await fetch("http://localhost:3000/submits", {
+      response2 = await fetch("http://localhost:3000/submits/update", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

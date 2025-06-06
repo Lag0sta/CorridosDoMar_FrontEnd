@@ -89,7 +89,6 @@ export const handleDeleteText = ({dispatch, index} : handleDeleteTextProps) : vo
     dispatch(remove(index));
 }
 
-
 //reset tout le reducer
 export const clearMainText = (dispatch : AppDispatch) => {
     dispatch(clear())

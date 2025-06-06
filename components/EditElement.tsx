@@ -24,12 +24,17 @@ const EditElement = ({ setIsEditOn }: Props) => {
     const [title, setTitle] = useState(contentToEdit.title)
     const [secondaryTitle, setSecondaryTitle] = useState(contentToEdit.secondaryTitle || "unknown")
     const [secondaryType, setSecondaryType] = useState(contentToEdit.secondaryType)
+    const [selectedSubType, setSelectedSubType] = useState("");
     const [mainText, setMainText] = useState(contentMainText)
     const [editedText, setEditedText] = useState<string[]>([])
     const [selectedType, setSelectedType] = useState("")
     const [isLoading, setIsLoading] = useState(false);
     const [indexToRemove, setIndexToRemove] = useState<number>(-1)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [succesMessage, setSuccessMessage] = useState<string>("");
+    const [error, setError] = useState<string>("");
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const textData = useAppSelector((state) => state.handleMainText.value);
 
@@ -48,21 +53,13 @@ const EditElement = ({ setIsEditOn }: Props) => {
             setSecondaryTitle(contentToEdit.secondaryTitle)
         }
         setMainText(contentToEdit.mainText)
-        // setEditedText(contentToEdit.mainText.text)
     }, [contentToEdit])
 
-    // function handleSave() {
-    //     handleEditContent(token, type, title, secondaryTitle, secondaryType, mainText, links, setIsEditOn, setError, setIsEditModalOpen, setIsLoading)
-    // }
-
-    //IMPORTANT!!!!!!! REPENSES TOUTE CETTE PARTIE!!!!!!!!
-    //OBJECTIF: faire en sorte de ne pas utiliser les useState et de passer uniquement par le reducer pour les changements de valeurs des inputs modifiées!
-    //CHALLENGE: le reducer a la forme de l'OBJ de la BDD avec que les éléments modifiables, donc : {type:"", title:"", secondaryTitle:"", secondaryType:"", mainText:[{text:"", type:""}], links:[{title:"", url:""}]}
-    //DONC il va faloire créer des actions du reducer qui soit capable de modifier en détaile ces valeurs sans impacter les autres!!!!!
-    //MAAAAAAAIS si ça tout est codé correctement, l'utilisateur pourra modifier les textes sans pour autant passer par des étapes supplémentaires comme on a fait jusqu'ici!!!!
-    //Question: Si ça marche, est ce que je devrais utiliser la même méthode lors de la modification du texte lors de la création d'un nouvel élément à submit ?????
-    //POUR: ça devrait réduire la quantité de code
-    //CONTRE: ça va prendre un peu de temps le temps de comprendre ce qu'il faut modifier sans impacter le reste
+    function handleSave() {
+        const props = {token, type, title, secondaryTitle, secondaryType, mainText, links, setIsEditOn, selectedSubType, setError, setIsEditModalOpen, setLoading, dispatch, setSuccessMessage
+        }
+        handleEditContent(props)
+    }
 
     const HandleEditTextClick = (index: number): void => {
         console.log("click Edit")
@@ -80,7 +77,7 @@ const EditElement = ({ setIsEditOn }: Props) => {
                 // Vérifie si textData[i].text est un tableau
                 if (Array.isArray(textData[i].text)) {
                     for (const text of textData[i].text) {
-                        textArr.push(text + "\n");
+                        textArr.push(text);
                         console.log("textARRRRRRRR", textArr)
 
                     }
@@ -114,7 +111,7 @@ const EditElement = ({ setIsEditOn }: Props) => {
                     </div>
                 </div>
 
-                {textData.map((textData: any, index: number) => (
+                {textData.map((data: any, index: number) => (
 
                     <div className="w-[100%] my-2 py-2 px-2 flex flex-col rounded-md bg-gray-200"
                         key={index}>
@@ -159,7 +156,13 @@ const EditElement = ({ setIsEditOn }: Props) => {
                                     </svg>)}
                             </div>
                             <div className="w-full">
-                                <span key={index} className="p-0 m-0">{textData.text}</span>
+                                <div key={index} className={`w-full pr-6 m-0 flex flex-col text-center text-lg ${data.type}`}>
+                                    {data.text.map((text: string, index: number) => (
+                                        <span key={index} className="-mb-2 m-0">
+                                            {text}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
@@ -169,7 +172,7 @@ const EditElement = ({ setIsEditOn }: Props) => {
             </div>
             <div className="flex justify-center">
                 <span className="text-center bg-black text-lg text-white px-4 py-2 rounded-md hover:bg-yellow-500 hover:text-black"
-                //onClick={() => handleSave()}
+                onClick={() => handleSave()}
                 >save</span>
             </div>
             {isModalOpen && (
